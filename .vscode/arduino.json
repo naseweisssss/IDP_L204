@@ -1,0 +1,6 @@
+{
+    "configuration": "cpu=atmega2560",
+    "board": "arduino:avr:mega",
+    "sketch": "L204_IDP.ino",
+    "port": "/dev/ttyACM0"
+}

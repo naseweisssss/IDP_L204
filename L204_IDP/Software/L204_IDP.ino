@@ -28,6 +28,7 @@ void setup()
   
   // servos
   //TODO: Choose the port for motors (right and left)
+  //TODO: Change to motors code
   leftServo.attach(5);
   rightServo.attach(3);
   
@@ -63,4 +64,3 @@ void loop()
       break;     
   }
 }
-

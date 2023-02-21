@@ -40,7 +40,7 @@ void motorBackward()
 {
 //  leftServo.writeMicroseconds(1500 + power);
 //  rightServo.writeMicroseconds(1500 - power);
-motorRun(power/2, power/2);
+motorRun(power/2, power*adj/2);
 delay(20);
 }
 

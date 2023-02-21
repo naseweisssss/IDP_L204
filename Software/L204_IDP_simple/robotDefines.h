@@ -8,8 +8,8 @@ int mode = 0;
 
 const int power = 255;
 const int iniMotorPower = 100;
-const int adj = 1;
-float adjTurn = 8;
+const int adj = 1;          // In case one motor drives at different speed to the other so the robot will drive in a straight line
+// float adjTurn = 8;
 
 const int OrangeLED = 13;
 const int RedLED = 12;              // May need to change the pins

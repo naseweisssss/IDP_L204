@@ -10,7 +10,7 @@ void ledBlink(void)
 }
 
 //-----------------------------------------------------------------------------
-
+// This is a test
  void checkBTcmd()  
  { 
    while (BT1.available())   //Check if there is an available byte to read

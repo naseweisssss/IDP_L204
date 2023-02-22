@@ -9,3 +9,4 @@ Software TODO:
 3. code for colour sensing
 4. code for turning 180 and reiterate
 5. code for line following
+6. code for leaving the starting box

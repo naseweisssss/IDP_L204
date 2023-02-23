@@ -1,23 +1,45 @@
 
+void motorRun(int spd1, int spd2){
+  if (spd1 < 0 ){
+     myMotor_1->setSpeed(- spd1);
+     myMotor_1-> run(BACKWARD);
+  }
+    elif (spd1 >= 0 ){
+     myMotor_1->setSpeed(spd1);
+     myMotor_1-> run(FORWARD);
+  }
+
+    if (spd2 < 0 ){
+     myMotor_2->setSpeed(- spd2);
+     myMotor_2-> run(FORWARD);
+  }
+    elif (spd2 >= 0 ){
+     myMotor_2->setSpeed(spd2);
+     myMotor_2-> run(BACKWARD);
+  }
+  
+}
+
 void motorStop()
 {
-  leftServo.writeMicroseconds(1500);
-  rightServo.writeMicroseconds(1500);
+  motorRun(0, 0);
   delay(200);
 }
 
 //--------------------------------------------- 
 void motorForward()
 {
-  leftServo.writeMicroseconds(1500 - power);
-  rightServo.writeMicroseconds(1500 + power*adj);
+//  leftServo.writeMicroseconds(1500 - power);
+//  rightServo.writeMicroseconds(1500 + power*adj);
+motorRun(power, power*adj);
 }
 
 //---------------------------------------------
 void motorBackward()
 {
-  leftServo.writeMicroseconds(1500 + power);
-  rightServo.writeMicroseconds(1500 - power);
+//  leftServo.writeMicroseconds(1500 + power);
+//  rightServo.writeMicroseconds(1500 - power);
+motorRun(power/2, power/2);
 }
 
 //---------------------------------------------
@@ -38,10 +60,21 @@ void motorBwTime (unsigned int time)
 
 //------------------------------------------------
 void motorTurn(int direction, int degrees)
-{
-  leftServo.writeMicroseconds(1500 - iniMotorPower*direction);
-  rightServo.writeMicroseconds(1500 - iniMotorPower*direction);
-  delay (round(adjTurn*degrees+1));
+{ if (direction == LEFT){
+
+  motorRun(power - iniMotorPower, power);
+}
+
+if (direction == RIGHT){
+
+  motorRun(power, power - iniMotorPower);
+}
+//  leftServo.writeMicroseconds(1500 - iniMotorPower*direction);
+//  rightServo.writeMicroseconds(1500 - iniMotorPower*direction);
+
+//  delay (round(adjTurn*degrees+1));
+
+  delay(20);
   motorStop();
 }
 
@@ -49,21 +82,19 @@ void motorTurn(int direction, int degrees)
 void motorPIDcontrol()
 {
   
-  int leftMotorSpeed = 1500 - iniMotorPower - PIDvalue;
-  int rightMotorSpeed = 1500 + iniMotorPower*adj - PIDvalue;
+  int leftMotorSpeed = power - iniMotorPower - PIDvalue;
+  int rightMotorSpeed = power + iniMotorPower*adj - PIDvalue;
   
   // The motor speed should not exceed the max PWM value
-   constrain(leftMotorSpeed, 1000, 2000);
-   constrain(rightMotorSpeed, 1000, 2000);
+   constrain(leftMotorSpeed, -255, 255);
+   constrain(rightMotorSpeed, -255, 255);
   
-  leftServo.writeMicroseconds(leftMotorSpeed);
-  rightServo.writeMicroseconds(rightMotorSpeed);
+  motorRun(leftMotorSpeed, rightMotorSpeed);
   
-  //Serial.print (PIDvalue);
-  //Serial.print (" ==> Left, Right:  ");
-  //Serial.print (leftMotorSpeed);
-  //Serial.print ("   ");
-  //Serial.println (rightMotorSpeed);
+//  Serial.print (PIDvalue);
+//  Serial.print (" ==> Left, Right:  ");
+//  Serial.print (leftMotorSpeed);
+//  Serial.print ("   ");
 }
 
 //-----------------------------

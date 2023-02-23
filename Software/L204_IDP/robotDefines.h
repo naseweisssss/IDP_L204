@@ -4,8 +4,8 @@ int mode = 0;
 # define FOLLOWING_LINE 1
 # define NO_LINE 2
 
-const int power = 500;
-const int iniMotorPower = 250;
+const int power = 255;
+const int iniMotorPower = 100;
 const int adj = 1;
 float adjTurn = 8;
 
@@ -22,7 +22,7 @@ const int lineFollowSensor3 = 16;
 int LFSensor[4]={0, 0, 0, 0};
 
 // PID controller
-float Kp=50;
+float Kp=5;
 float Ki=0;
 float Kd=0;
 
@@ -34,5 +34,3 @@ float previousError=0, previousI=0;
 
 Servo leftServo;
 Servo rightServo;
-
-

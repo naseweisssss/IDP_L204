@@ -11,3 +11,6 @@ void ledBlink(void)
 
 
 // TODO - make all the LED commands work
+void mark(void){
+  // 
+}

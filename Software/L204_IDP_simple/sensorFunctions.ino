@@ -28,21 +28,27 @@ New line sensor options:
 */
 void readLFSsensors()
 {
-  LFSensor[0] = digitalRead(lineFollowSensor0);
-  LFSensor[1] = digitalRead(lineFollowSensor1);
-  LFSensor[2] = digitalRead(lineFollowSensor2);
-  LFSensor[3] = digitalRead(lineFollowSensor3);
+  LFSensor[0] = !digitalRead(lineFollowSensor0);
+  LFSensor[1] = !digitalRead(lineFollowSensor1);
+  LFSensor[2] = !digitalRead(lineFollowSensor2);
+  LFSensor[3] = !digitalRead(lineFollowSensor3);
  
   
-  if((     LFSensor[0]== 1 )&&(LFSensor[1]== 1 )&&(LFSensor[2]== 0 )&&(LFSensor[3]== 0 ))  {mode = ON_LINE;} // Junction
+  if((     LFSensor[0]== 1 )&&(LFSensor[1]== 1 )&&(LFSensor[2]== 0 )&&(LFSensor[3]== 0 ))  {mode = RIGHT_LINE;} // Junction
   else if((LFSensor[0]== 1 )&&(LFSensor[1]== 1 )&&(LFSensor[2]== 1 )&&(LFSensor[3]== 0 ))  {mode = ON_LINE;} // Junction
   else if((LFSensor[0]== 0 )&&(LFSensor[1]== 1 )&&(LFSensor[2]== 0 )&&(LFSensor[3]== 0 ))  {mode = RIGHT_LINE;}
   else if((LFSensor[0]== 0 )&&(LFSensor[1]== 0 )&&(LFSensor[2]== 0 )&&(LFSensor[3]== 0 ))  {mode = ON_LINE;}
+   else if((LFSensor[0]== 0 )&&(LFSensor[1]== 1 )&&(LFSensor[2]== 1 )&&(LFSensor[3]== 0 ))  {mode = ON_LINE;}
   else if((LFSensor[0]== 0 )&&(LFSensor[1]== 0 )&&(LFSensor[2]== 1 )&&(LFSensor[3]== 0 ))  {mode = LEFT_LINE;}
   else if((LFSensor[0]== 0 )&&(LFSensor[1]== 1 )&&(LFSensor[2]== 1 )&&(LFSensor[3]== 1 ))  {mode = ON_LINE;} // Junction
-  else if((LFSensor[0]== 0 )&&(LFSensor[1]== 0 )&&(LFSensor[2]== 1 )&&(LFSensor[3]== 1 ))  {mode = ON_LINE;} // Junction
+  else if((LFSensor[0]== 0 )&&(LFSensor[1]== 0 )&&(LFSensor[2]== 1 )&&(LFSensor[3]== 1 ))  {mode = LEFT_LINE;} // Junction
   else if((LFSensor[0]== 1 )&&(LFSensor[1]== 1 )&&(LFSensor[2]== 1 )&&(LFSensor[3]== 1 ))  {mode = STOPPED;} // Leaving box
 
+  for (int i=0; i<4; i++){
+    Serial.print(LFSensor[i]);
+    Serial.print(" ");
+  }
+  Serial.println(mode);
 //3 of them at junction TODO: Code the 3 1110
 // change to junction mode:; which junction at
 

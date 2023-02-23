@@ -4,18 +4,18 @@ void motorRun(int spd1, int spd2){
      myMotor_1->setSpeed(- spd1);
      myMotor_1-> run(BACKWARD);
   }
-    elif (spd1 >= 0 ){
+    else if (spd1 >= 0 ){
      myMotor_1->setSpeed(spd1);
      myMotor_1-> run(FORWARD);
   }
 
     if (spd2 < 0 ){
      myMotor_2->setSpeed(- spd2);
-     myMotor_2-> run(FORWARD);
-  }
-    elif (spd2 >= 0 ){
-     myMotor_2->setSpeed(spd2);
      myMotor_2-> run(BACKWARD);
+  }
+    else if (spd2 >= 0 ){
+     myMotor_2->setSpeed(spd2);
+     myMotor_2-> run(FORWARD);
   }
   
 }
@@ -57,4 +57,9 @@ if (direction == RIGHT){
 }
 
   delay(20);
+}
+
+
+void segment1_2(){
+  
 }

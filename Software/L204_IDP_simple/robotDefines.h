@@ -1,4 +1,7 @@
 int mode = 0;
+int pos = 0;// 1 - 5 depending on location
+int prev_pos = 0;
+int target = 3; // Where the robot is trying to go
 
 # define STOPPED 0
 # define ON_LINE 1
@@ -6,9 +9,9 @@ int mode = 0;
 # define RIGHT_LINE 3
 # define NO_LINE 4
 
-const int power = 255;
+const int power = 100;
 const int iniMotorPower = 100;
-const int adj = 1;          // In case one motor drives at different speed to the other so the robot will drive in a straight line
+const float adj = 1;          // In case one motor drives at different speed to the other so the robot will drive in a straight line
 // float adjTurn = 8;
 
 const int OrangeLED = 13;
@@ -17,10 +20,10 @@ const int GreenLED = 11;
 const int buttonPin = 9;
 
 // LFSensor more to the Left is "0"
-const int lineFollowSensor0 = 12; 
-const int lineFollowSensor1 = 18; 
-const int lineFollowSensor2 = 17; 
-const int lineFollowSensor3 = 16;
+const int lineFollowSensor0 = 5; 
+const int lineFollowSensor1 = 6; 
+const int lineFollowSensor2 = 7; 
+const int lineFollowSensor3 = 8;
 
 
 int LFSensor[4]={0, 0, 0, 0};

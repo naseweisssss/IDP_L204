@@ -72,7 +72,12 @@ void loop()
       delay(delay_time);
       break;
 
-    case NO_LINE:
+    case JUNCTION:
+      motorForward();           // Needs to be changed when we want to actually stop at a junction
+      delay(delay_time);
+      break;
+
+    case ERROR:
       motorForward();
       delay(delay_time);
       break;

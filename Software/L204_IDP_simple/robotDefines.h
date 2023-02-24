@@ -7,10 +7,13 @@ int target = 3; // Where the robot is trying to go
 # define ON_LINE 1
 # define LEFT_LINE 2        // Include if the outside sensors measure a junction
 # define RIGHT_LINE 3
-# define NO_LINE 4
+# define JUNCTION 4
+# define ERROR 5
 
-const int power = 100;
-const int iniMotorPower = 100;
+
+const int power = 100;     
+const float steeringSmoothness = 0.5;
+int iniMotorPower = power * steeringSmoothness; // This function is later overwritten relative to iniMotorPower
 const float adj = 1;          // In case one motor drives at different speed to the other so the robot will drive in a straight line
 // float adjTurn = 8;
 

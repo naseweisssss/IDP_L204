@@ -31,7 +31,7 @@ int delay_time = 50; // Delay between each sensor reading
 // Defining constants for robot speed and steering smoothness/reactivity
 const int power = 100;     
 const float steeringSmoothness = 0.5;
-int iniMotorPower = power * steeringSmoothness; // This function is later overwritten relative to iniMotorPower
+int iniMotorPower = power * steeringSmoothness; // This function is later overwritten relative to power
 const float adj = 1;          // In case one motor drives at different speed to the other so the robot will drive in a straight line
 const int spinSpeed = 100;          // Controls how case spins 180 in boxes
 

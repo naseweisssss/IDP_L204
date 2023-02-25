@@ -45,16 +45,25 @@ delay(20);
 }
 
 //------------------------------------------------
-void motorTurn(int direction)
-{ if (direction == LEFT){
+void motorTurn(int direction){ 
+  if (direction == LEFT){
+    motorRun(power - iniMotorPower, power);
+  }
+  else if (direction == RIGHT){
+    motorRun(power, power - iniMotorPower);
+  }
 
-  motorRun(0, power);
+  delay(20);
 }
 
-if (direction == RIGHT){
 
-  motorRun(power, 0);
-}
+void motorTightTurn(int direction){
+  if (direction == LEFT){
+    motorRun(-power / 2, power / 2);
+  }
+  else if (direction == RIGHT){
+    motorRun(power / 2,  - power / 2);
+  }
 
   delay(20);
 }

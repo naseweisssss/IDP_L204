@@ -103,7 +103,7 @@ void setDestination(void){
          break;
       
       case RED_BOX:
-         target = 3;    // Should turn right and go over the ramp to the closet location
+         target = 3;    // Should turn right and go over the ramp to the closest location
          dir = RIGHT;
          // Or if at time limit go back to END
          break;
@@ -126,13 +126,13 @@ void turn90degrees(int direction){
          if (LFSensor[1] == 1){
             onLine = 1;
          }
-         motorTurn(RIGHT);       // Need to test that this function is the right way around MIGHT NEED TO CHANGE
+         motorTightTurn(RIGHT);       // Need to test that this function is the right way around MIGHT NEED TO CHANGE
       }
       else if (direction == LEFT){
          if (LFSensor[2] == 1){
             onLine = 1;
          }
-         motorTurn(LEFT);
+         motorTightTurn(LEFT);
       }
       delay(50);     // Might need to adjust so doesn't miss the line
    }
@@ -140,7 +140,7 @@ void turn90degrees(int direction){
 
 void turn180degrees(){
    // Hardcoded function for turning around when in the squares
-   motorRun(spinSpeed, spinSpeed);
+   motorTightTurn(LEFT);
    delay(500);       // Needs to be tuned to get accurate turning around
    motorStop();
 }
@@ -177,7 +177,7 @@ void starting_square(void){
 
 }
 
-void finishing(void){
+void finishing_square(void){
    // Code for getting back into the END square from the junction
 }
 

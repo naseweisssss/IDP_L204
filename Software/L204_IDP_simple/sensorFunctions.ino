@@ -26,6 +26,9 @@ New line sensor options:
 0 0 0 0        0 Robot found no line: turn 180o //TODO: Determine something to do
 
 */
+
+
+
 void readLFSsensors() {
 
 // Function for reading the line sensors and storing them in an array
@@ -43,8 +46,7 @@ void readLFSsensors() {
     Serial.print(LFSensor[i]);
     Serial.print(" ");
   }
-  Serial.print("Mode: ")
-  Serial.println(mode);
+  Serial.println(" ");
 //3 of them at junction TODO: Code the 3 1110
 // change to junction mode:; which junction at
 
@@ -78,10 +80,10 @@ void lineFollowingMode(){
   else if((LFSensor[0]== 0 )&&(LFSensor[1]== 0 )&&(LFSensor[2]== 0 )&&(LFSensor[3]== 1 ))  {mode = LEFT_LINE; iniMotorPower = power;}
 
 // Code which detects the presence of a junction  
-  else if((LFSensor[0]== 1 )&&(LFSensor[1]== 1 )&&(LFSensor[2]== 1 )&&(LFSensor[3]== 0 ))  {mode = JUNCTION;}
+  //else if((LFSensor[0]== 1 )&&(LFSensor[1]== 1 )&&(LFSensor[2]== 1 )&&(LFSensor[3]== 0 ))  {mode = JUNCTION;}   // Don't think this state is possible
   else if((LFSensor[0]== 1 )&&(LFSensor[1]== 1 )&&(LFSensor[2]== 0 )&&(LFSensor[3]== 0 ))  {mode = JUNCTION;} // Junction
   else if((LFSensor[0]== 0 )&&(LFSensor[1]== 0 )&&(LFSensor[2]== 1 )&&(LFSensor[3]== 1 ))  {mode = JUNCTION;} // Junction
-  else if((LFSensor[0]== 0 )&&(LFSensor[1]== 1 )&&(LFSensor[2]== 1 )&&(LFSensor[3]== 1 ))  {mode = JUNCTION;} // Leaving box
+  //else if((LFSensor[0]== 0 )&&(LFSensor[1]== 1 )&&(LFSensor[2]== 1 )&&(LFSensor[3]== 1 ))  {mode = JUNCTION;} // Leaving box
 
 // Code for error states --> not currently using as for leaving the squares
 //  else if((LFSensor[0]== 1 )&&(LFSensor[1]== 1 )&&(LFSensor[2]== 1 )&&(LFSensor[3]== 1 ))  {mode = ERROR;}

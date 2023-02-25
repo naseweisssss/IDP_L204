@@ -48,12 +48,12 @@ delay(20);
 void motorTurn(int direction)
 { if (direction == LEFT){
 
-  motorRun(power - iniMotorPower, power);
+  motorRun(0, power);
 }
 
 if (direction == RIGHT){
 
-  motorRun(power, power - iniMotorPower);
+  motorRun(power, 0);
 }
 
   delay(20);

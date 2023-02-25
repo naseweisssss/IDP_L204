@@ -38,8 +38,7 @@ void followLine(void){
       break;
 
     case JUNCTION:
-      motorForward();           // Needs to be changed when we want to actually stop at a junction
-      delay(delay_time);
+      mark();
       break;
 }
 
@@ -47,7 +46,45 @@ void followLine(void){
 // TODO - make all the LED commands work
 void mark(void){
   // Keeps track of the current position of the robot
+  if (dir == RIGHT){
+   // Last turned right at a junction so is moving anti-clockwise
+   
+   // Slightly janky code to make sure no errors
+   int temp = pos;
+   temp++;
+  }
 
+  else if (dir == LEFT){
+   // Last turned left at a junction so is moving clockwise
+   
+   // Slightly janky code to make sure no errors
+   int temp = pos;
+   temp--;
+  }
+
+  if (temp == 0){pos = 1;}
+  else {pos = temp;}
+
+  if (pos == target){
+   // Robot is at the desired location so do something
+
+   motorStop();
+   delay(500);
+   int new_turn = -1 * dir;   // Always need to turn opposite way into junction as out of last junction
+   turn90degrees(new_turn);
+   delay(100);
+
+
+   // switch(pos):
+   // Idea for how to do something specific at each junction
+
+
+  }
+  else if (pos != target){
+   // Not sure if this is the best way of avoid a junction being registered twice as hardcoding
+   motorForward();
+   delay(1000);
+  }
 }
 
 void setDestination(void){
@@ -101,6 +138,12 @@ void turn90degrees(int direction){
    }
 }
 
+void turn180degrees(){
+   // Hardcoded function for turning around when in the squares
+   motorRun(spinSpeed, spinSpeed);
+   delay(500);       // Needs to be tuned to get accurate turning around
+   motorStop();
+}
 
 void starting_square(void){
    // function to hardcode leaving the starting square
@@ -132,4 +175,16 @@ void starting_square(void){
       followLine();  // Just run the same line following program
    }
 
+}
+
+void finishing(void){
+   // Code for getting back into the END square from the junction
+}
+
+void picking_up_block(void){
+   // Code for picking up the block
+}
+
+void drop_off_block(void){
+   // Code for dropping off the block
 }

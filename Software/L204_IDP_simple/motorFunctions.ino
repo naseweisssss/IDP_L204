@@ -58,8 +58,3 @@ if (direction == RIGHT){
 
   delay(20);
 }
-
-
-void segment1_2(){
-  
-}

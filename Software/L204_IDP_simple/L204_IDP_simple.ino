@@ -40,6 +40,8 @@ void setup()
   Serial.println("Line Follower is alive ==> Presss the button to start");
 
 
+  // Theoretical code for starting loop when everything is started
+  //starting_square();
 }
 
 void loop() {

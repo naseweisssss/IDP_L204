@@ -2,7 +2,6 @@ int mode = 0;
 
 // Stores the navigation constants
 int pos = 0;// 1 - 5 depending on location
-int prev_pos = 0;
 int target = 0; // Where the robot is trying to go
 int dir = 0;    // For storing direction turns when get to junctions
 # define START_END_BOX 1
@@ -34,7 +33,7 @@ const int power = 100;
 const float steeringSmoothness = 0.5;
 int iniMotorPower = power * steeringSmoothness; // This function is later overwritten relative to iniMotorPower
 const float adj = 1;          // In case one motor drives at different speed to the other so the robot will drive in a straight line
-
+const int spinSpeed = 100;          // Controls how case spins 180 in boxes
 
 // Defining the pins for LED output
 const int OrangeLED = 13;

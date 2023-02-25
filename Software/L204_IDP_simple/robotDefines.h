@@ -3,11 +3,21 @@ int mode = 0;
 // Stores the navigation constants
 int pos = 0;// 1 - 5 depending on location
 int prev_pos = 0;
-int target = 3; // Where the robot is trying to go
-
+int target = 0; // Where the robot is trying to go
+int dir = 0;    // For storing direction turns when get to junctions
+# define START_END_BOX 1
+# define RED_BOX 2
+# define BLOCK1 3
+# define BLOCK2 4
+# define GREEN_BOX 5
 
 // Defines the update frequency of the robot
 int delay_time = 50; // Delay between each sensor reading
+
+
+// Defining the constants for the colour sensing
+# define BLUE 1
+# define BROWN 2
 
 
 // Defining the line sensing modes

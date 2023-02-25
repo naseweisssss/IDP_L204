@@ -91,3 +91,10 @@ void lineFollowingMode(){
   //else if((LFSensor[0]== 1 )&&(LFSensor[1]== 1 )&&(LFSensor[2]== 1 )&&(LFSensor[3]== 1 ))  {mode = STOPPED; error = 0;}
   //else if((LFSensor[0]== 0 )&&(LFSensor[1]== 0 )&&(LFSensor[2]== 0 )&&(LFSensor[3]== 0 ))  {mode = NO_LINE; error = 0;}
 }
+
+int colourDetection(){
+  // Function that detects the colour of the block depending on the sensors from the Arduino reading
+  int colour = 1;
+
+  return colour;
+}

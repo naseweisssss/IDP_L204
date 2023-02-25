@@ -43,11 +43,64 @@ void followLine(void){
       break;
 }
 
+
 // TODO - make all the LED commands work
 void mark(void){
   // Keeps track of the current position of the robot
 
 }
+
+void setDestination(void){
+   // Function for setting the nect destination for the robot to head to depending on the current aim of the robot
+   // Responsible for turning out of junctions?
+
+   switch(pos){
+      case BLOCK1: case BLOCK2:
+         colour = colourDetection();
+         if (colour == 1){
+            target = 5;
+         }
+         else if (colour == 2){
+            target = 2;
+         }
+         break;
+      
+      case RED_BOX:
+         target = 3;    // Should turn right and go over the ramp to the closet location
+         dir = RIGHT;
+         // Or if at time limit go back to END
+         break;
+
+      case GREEN_BOX:
+         target = 4;    // Should turn left and go out of the tunnel
+         dir = LEFT;
+         // Or if at time limit go back to END
+         break;
+   }
+}
+
+void turn90degrees(int direction){
+   // Function for turning in a specific direction until the robot senses it is back on the line
+   int onLine = 0;   // For keeping track of when the turn is completed
+
+   while (!onLine){
+      readLFSensors();
+      if (direction == RIGHT){
+         if (LFSensor[1] == 1){
+            onLine = 1;
+         }
+         motorTurn(RIGHT);       // Need to test that this function is the right way around MIGHT NEED TO CHANGE
+      }
+      else if (direction == LEFT){
+         if (LFSensor[2] == 1){
+            onLine = 1;
+         }
+         motorTurn(LEFT);
+      }
+      delay(50);     // Might need to adjust so doesn't miss the line
+   }
+}
+
 
 void starting_square(void){
    // function to hardcode leaving the starting square
@@ -69,15 +122,14 @@ void starting_square(void){
       readLFSsensors();
       if ((LFSensor[0]== 1 )&&(LFSensor[1]== 1 )&&(LFSensor[2]== 1 )&&(LFSensor[3]== 1 )){
          main_line = 1;   // Robot has reached the main line at the junction
-         pos = 1;          // Set the current position of the robot to position 1
+         pos = START_END_BOX;          // Set the current position of the robot to position 1
 
          motorStop();
          delay(1000):
 
-         motorTurn(RIGHT);    // Turn right towards the ramp to go and fetch a block --> this needs to be tested because not currently working
+         turn90degrees(RIGHT);    // Turn right towards the ramp to go and fetch a block --> this needs to be tested because not currently working
       }
       followLine();  // Just run the same line following program
-
    }
 
 }

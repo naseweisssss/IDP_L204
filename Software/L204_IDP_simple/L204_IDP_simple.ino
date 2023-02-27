@@ -46,7 +46,7 @@ void loop()
 {
 
  
-  int delay_time = 50; // Delay between each sensor reading
+  int delay_time = 100; // Delay between each sensor reading
   readLFSsensors();
   
   switch (mode)

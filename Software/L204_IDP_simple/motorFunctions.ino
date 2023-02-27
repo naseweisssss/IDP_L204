@@ -10,11 +10,11 @@ void motorRun(int spd1, int spd2){
   }
 
     if (spd2 < 0 ){
-     myMotor_2->setSpeed(- spd2);
+     myMotor_2->setSpeed(- spd2-20);
      myMotor_2-> run(BACKWARD);
   }
     else if (spd2 >= 0 ){
-     myMotor_2->setSpeed(spd2);
+     myMotor_2->setSpeed(spd2+20);
      myMotor_2-> run(FORWARD);
   }
   

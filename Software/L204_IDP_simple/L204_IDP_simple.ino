@@ -40,41 +40,57 @@ void setup()
   Serial.println("Line Follower is alive ==> Presss the button to start");
 
 
+  // Theoretical code for starting loop when everything is started
+  //starting_square();
 }
 
-void loop()
-{
+void loop() {
+  // Should follow the line exactly as it did previously
+  followLine();
+
+
+  // IN CASE THIS STOPS THINGS WORKING I HAVE CHANGED:
+    // - MOVED MODE DECISIONS OUT OF ONE SENSOR FUNCTION
+    // - MOVED THE FOLLOWLINE CODE TO ANOTHER FUNCTION
+    // NOTHING ELSE RELATING TO LINE SENSING SHOULD HAVE BEEN CHANGED
+
 
  
-  int delay_time = 100; // Delay between each sensor reading
-  readLFSsensors();
+
+  // readLFSsensors(); // Reads the sensor
+  // lineFollowingMode();  // Gets the correct mode depending on the output of the line sensors
   
-  switch (mode)
-  {
+  // switch (mode)
+  // {
     
-    case STOPPED:
-      motorStop();
-      delay(delay_time);
-      break;
+  //   case STOPPED:
+  //     motorStop();
+  //     delay(delay_time);
+  //     break;
 
-    case ON_LINE:
-      motorForward();
-      delay(delay_time);
-      break;
+  //   case ON_LINE:
+  //     motorForward();
+  //     delay(delay_time);
+  //     break;
 
-    case LEFT_LINE:
-      motorTurn(RIGHT);
-      delay(delay_time);
-      break;
+  //   case LEFT_LINE:
+  //     motorTurn(RIGHT);
+  //     delay(delay_time);
+  //     break;
 
-    case RIGHT_LINE:
-      motorTurn(LEFT);
-      delay(delay_time);
-      break;
+  //   case RIGHT_LINE:
+  //     motorTurn(LEFT);
+  //     delay(delay_time);
+  //     break;
 
-    case NO_LINE:
-      motorForward();
-      delay(delay_time);
-      break;
-  }
+  //   case JUNCTION:
+  //     motorForward();           // Needs to be changed when we want to actually stop at a junction
+  //     delay(delay_time);
+  //     break;
+
+  //   // case ERROR:
+  //   //   motorForward();
+  //   //   delay(delay_time);
+  //   //   break;
+  // }
 }

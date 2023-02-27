@@ -14,43 +14,86 @@ void followLine(void){
 
   readLFSsensors(); // Reads the sensor
   lineFollowingMode();  // Gets the correct mode depending on the output of the line sensors
-  
-  switch (mode)
-  {
-    case STOPPED:
-      motorStop();
-      delay(delay_time);
-      break;
 
-    case ON_LINE:
-      motorForward();
-      delay(delay_time);
-      break;
+switch (mode)
+   {
+    
+     case STOPPED:
+       motorStop();
+       delay(delay_time);
+       break;
 
-    case LEFT_LINE:
-      motorTurn(RIGHT);
-      delay(delay_time);
-      break;
+     case ON_LINE:
+       motorForward();
+       delay(delay_time);
+       break;
 
-    case RIGHT_LINE:
-      motorTurn(LEFT);
-      delay(delay_time);
-      break;
+     case LEFT_LINE:
+       if (!tight){
+         motorTurn(RIGHT);
+         delay(delay_time);
+      }
+      else if (tight){
+        Serial.println("Started tight RIGHT turn");
+        int  onLine = 0;
+        while (!onLine){
+          readLFSsensors();
+          if (LFSensor[2] == 1){
+            onLine = 1;
+            tight = 0;
+          }
+          else if (LFSensor[2] == 0){
+            motorTurn(RIGHT);
+          }
+          delay(100);
+        }
+      }
+       break;
 
-    case JUNCTION:
-      mark();
-      break;
+     case RIGHT_LINE:
+      if (!tight){
+         motorTurn(LEFT);
+         delay(delay_time);
+      }
+      else if (tight){
+        Serial.println("Started tight LEFT turn");
+        int  onLine = 0;
+        while (!onLine){
+          readLFSsensors();
+          if (LFSensor[1] == 1){
+            onLine = 1;
+            tight = 0;
+          }
+          else if (LFSensor[1] == 0){
+            motorTurn(LEFT);
+          }
+          delay(100);
+        }
+      }
+       break;
+
+     case JUNCTION:
+       motorForward();           // Needs to be changed when we want to actually stop at a junction
+       delay(delay_time);
+       break;
+
+     // case ERROR:
+     //   motorForward();
+     //   delay(delay_time);
+    //   break;
+   
 }
-
+}
 
 // TODO - make all the LED commands work
 void mark(void){
   // Keeps track of the current position of the robot
+  int temp = pos;
   if (dir == RIGHT){
    // Last turned right at a junction so is moving anti-clockwise
    
    // Slightly janky code to make sure no errors
-   int temp = pos;
+   
    temp++;
   }
 
@@ -58,9 +101,10 @@ void mark(void){
    // Last turned left at a junction so is moving clockwise
    
    // Slightly janky code to make sure no errors
-   int temp = pos;
    temp--;
   }
+
+  temp = temp % 5;
 
   if (temp == 0){pos = 1;}
   else {pos = temp;}
@@ -77,9 +121,10 @@ void mark(void){
 
    // switch(pos):
    // Idea for how to do something specific at each junction
-
-
   }
+
+
+  
   else if (pos != target){
    // Not sure if this is the best way of avoid a junction being registered twice as hardcoding
    motorForward();
@@ -121,7 +166,7 @@ void turn90degrees(int direction){
    int onLine = 0;   // For keeping track of when the turn is completed
 
    while (!onLine){
-      readLFSensors();
+      readLFSsensors();
       if (direction == RIGHT){
          if (LFSensor[1] == 1){
             onLine = 1;
@@ -168,7 +213,7 @@ void starting_square(void){
          pos = START_END_BOX;          // Set the current position of the robot to position 1
 
          motorStop();
-         delay(1000):
+         delay(1000);
 
          turn90degrees(RIGHT);    // Turn right towards the ramp to go and fetch a block --> this needs to be tested because not currently working
       }

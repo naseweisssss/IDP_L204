@@ -32,11 +32,11 @@ New line sensor options:
 void readLFSsensors() {
 
 // Function for reading the line sensors and storing them in an array
-  LFSensor[0] = !digitalRead(lineFollowSensor0);
-  LFSensor[1] = !digitalRead(lineFollowSensor1);
-  LFSensor[2] = !digitalRead(lineFollowSensor2);
-  LFSensor[3] = !digitalRead(lineFollowSensor3);
- 
+  LFSensor[0] = digitalRead(lineFollowSensor0);
+  LFSensor[1] = digitalRead(lineFollowSensor1);
+  LFSensor[2] = digitalRead(lineFollowSensor2);
+  LFSensor[3] = digitalRead(lineFollowSensor3);
+
 
 // Where the function below used to be ************************************
 
@@ -71,13 +71,13 @@ void lineFollowingMode(){
 
 
 // Code for normal line following (not the corners or the junctions)
-  if(     (LFSensor[1]== 1 )&&(LFSensor[2]== 0 ))  {mode = RIGHT_LINE; iniMotorPower = power * steeringSmoothness;}  // Allows for smoother steering as there is less slowing down from the inside wheel
-  else if((LFSensor[1]== 0 )&&(LFSensor[2]== 0 ))  {mode = ON_LINE; iniMotorPower = power * steeringSmoothness;}
-  else if((LFSensor[1]== 0 )&&(LFSensor[2]== 1 ))  {mode = LEFT_LINE; iniMotorPower = power * steeringSmoothness;}
+  if(     (LFSensor[0]== 0 )&&(LFSensor[1]== 1 )&&(LFSensor[2]== 0 )&&(LFSensor[3]== 0 ))  {mode = RIGHT_LINE; tight = 0; iniMotorPower = power * steeringSmoothness;}  // Allows for smoother steering as there is less slowing down from the inside wheel
+  else if((LFSensor[0]== 0 )&&(LFSensor[1]== 0 )&&(LFSensor[2]== 0 )&&(LFSensor[3]== 0 ))  {mode = ON_LINE; tight = 0; iniMotorPower = power * steeringSmoothness;}
+  else if((LFSensor[0]== 0 )&&(LFSensor[1]== 0 )&&(LFSensor[2]== 1 )&&(LFSensor[3]== 0 ))  {mode = LEFT_LINE; tight = 0; iniMotorPower = power * steeringSmoothness;}
 
 // Code allowing for tighter turning at the corners --> the only time just a single outside sensor should be on is when the robot doesn't turn enough for a corner
-  else if((LFSensor[0]== 1 )&&(LFSensor[1]== 0 )&&(LFSensor[2]== 0 )&&(LFSensor[3]== 0 ))  {mode = RIGHT_LINE; iniMotorPower = power;}
-  else if((LFSensor[0]== 0 )&&(LFSensor[1]== 0 )&&(LFSensor[2]== 0 )&&(LFSensor[3]== 1 ))  {mode = LEFT_LINE; iniMotorPower = power;}
+  else if((LFSensor[0]== 1 )&&(LFSensor[1]== 0 )&&(LFSensor[2]== 0 )&&(LFSensor[3]== 0 ))  {mode = RIGHT_LINE; tight = 1; iniMotorPower = power; Serial.println("Tight LEFT turn");}
+  else if((LFSensor[0]== 0 )&&(LFSensor[1]== 0 )&&(LFSensor[2]== 0 )&&(LFSensor[3]== 1 ))  {mode = LEFT_LINE; tight = 1; iniMotorPower = power; Serial.println("Tight RIGHT turn");}
 
 // Code which detects the presence of a junction  
   //else if((LFSensor[0]== 1 )&&(LFSensor[1]== 1 )&&(LFSensor[2]== 1 )&&(LFSensor[3]== 0 ))  {mode = JUNCTION;}   // Don't think this state is possible
@@ -92,7 +92,9 @@ void lineFollowingMode(){
 
   //else if((LFSensor[0]== 1 )&&(LFSensor[1]== 1 )&&(LFSensor[2]== 1 )&&(LFSensor[3]== 1 ))  {mode = STOPPED; error = 0;}
   //else if((LFSensor[0]== 0 )&&(LFSensor[1]== 0 )&&(LFSensor[2]== 0 )&&(LFSensor[3]== 0 ))  {mode = NO_LINE; error = 0;}
+
 }
+
 
 int colourDetection(){
   // Function that detects the colour of the block depending on the sensors from the Arduino reading

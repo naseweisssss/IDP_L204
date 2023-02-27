@@ -57,40 +57,7 @@ void loop() {
 
  
 
-  // readLFSsensors(); // Reads the sensor
-  // lineFollowingMode();  // Gets the correct mode depending on the output of the line sensors
+   
   
-  // switch (mode)
-  // {
-    
-  //   case STOPPED:
-  //     motorStop();
-  //     delay(delay_time);
-  //     break;
-
-  //   case ON_LINE:
-  //     motorForward();
-  //     delay(delay_time);
-  //     break;
-
-  //   case LEFT_LINE:
-  //     motorTurn(RIGHT);
-  //     delay(delay_time);
-  //     break;
-
-  //   case RIGHT_LINE:
-  //     motorTurn(LEFT);
-  //     delay(delay_time);
-  //     break;
-
-  //   case JUNCTION:
-  //     motorForward();           // Needs to be changed when we want to actually stop at a junction
-  //     delay(delay_time);
-  //     break;
-
-  //   // case ERROR:
-  //   //   motorForward();
-  //   //   delay(delay_time);
-  //   //   break;
-  // }
+  
 }

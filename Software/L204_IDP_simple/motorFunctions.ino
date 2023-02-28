@@ -1,21 +1,21 @@
 
-void motorRun(int spd1, int spd2){
+void motorRun(int  spd1, int  spd2){
   if (spd1 < 0 ){
      myMotor_1->setSpeed(- spd1);
-     myMotor_1-> run(BACKWARD);
+     myMotor_1-> run(FORWARD);
   }
     else if (spd1 >= 0 ){
      myMotor_1->setSpeed(spd1);
-     myMotor_1-> run(FORWARD);
+     myMotor_1-> run(BACKWARD);
   }
 
     if (spd2 < 0 ){
      myMotor_2->setSpeed(- spd2-20);
-     myMotor_2-> run(BACKWARD);
+     myMotor_2-> run(FORWARD);
   }
     else if (spd2 >= 0 ){
      myMotor_2->setSpeed(spd2+20);
-     myMotor_2-> run(FORWARD);
+     myMotor_2-> run(BACKWARD);
   }
   
 }

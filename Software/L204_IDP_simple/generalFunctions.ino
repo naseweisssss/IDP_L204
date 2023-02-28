@@ -1,19 +1,26 @@
 void ledBlink(void)
 {
-   for (int i = 0; i<4; i++)
-   { 
-      digitalWrite (OrangeLED, HIGH);
-      delay (1000);
-      digitalWrite (OrangeLED, LOW);
-      delay (1000);
-   } 
+     if (millis() - previousMillis > interval) {
+    // save the last time you blinked the LED 
+    previousMillis = millis();   
+
+    // if the LED is off turn it on and vice-versa:
+    if (OrangeLEDState == LOW)
+      OrangeLEDState = HIGH;
+    else
+      OrangeLEDState = LOW;
+      
+    // set the LED with the ledState of the variable:
+    //digitalWrite(OrangeLED, ledState);
+  }
 }
 
 void followLine(void){
    // Function to make the robot follow the line (what used to be in the loop function)
-
+  
   readLFSsensors(); // Reads the sensor
   lineFollowingMode();  // Gets the correct mode depending on the output of the line sensors
+  //ledBlink();
 
 switch (mode)
    {
@@ -137,24 +144,26 @@ void setDestination(void){
    // Responsible for turning out of junctions?
 
    switch(pos){
+    
       case BLOCK1: case BLOCK2:
+      
          colour = colourDetection();
          if (colour == 1){
-            target = 5;
+            target = 4;
          }
          else if (colour == 2){
-            target = 2;
+            target = 1;
          }
          break;
       
       case RED_BOX:
-         target = 3;    // Should turn right and go over the ramp to the closest location
+         target = 2;    // Should turn right and go over the ramp to the closest location
          dir = RIGHT;
          // Or if at time limit go back to END
          break;
 
       case GREEN_BOX:
-         target = 4;    // Should turn left and go out of the tunnel
+         target = 3;    // Should turn left and go out of the tunnel
          dir = LEFT;
          // Or if at time limit go back to END
          break;
@@ -170,14 +179,16 @@ void turn90degrees(int direction){
       if (direction == RIGHT){
          if (LFSensor[1] == 1){
             onLine = 1;
+ 
          }
-         motorTightTurn(RIGHT);       // Need to test that this function is the right way around MIGHT NEED TO CHANGE
+         motorTurn(RIGHT);       // Need to test that this function is the right way around MIGHT NEED TO CHANGE
       }
       else if (direction == LEFT){
          if (LFSensor[2] == 1){
             onLine = 1;
+          
          }
-         motorTightTurn(LEFT);
+         motorTurn(LEFT);
       }
       delay(50);     // Might need to adjust so doesn't miss the line
    }
@@ -197,7 +208,7 @@ void starting_square(void){
 
    while (!first_line){
       readLFSsensors();
-      if ((LFSensor[0]== 1 )&&(LFSensor[1]== 1 )&&(LFSensor[2]== 1 )&&(LFSensor[3]== 1 )){
+      if ((LFSensor[1]== 1 )&&(LFSensor[2]== 1 )){
          first_line = 1;   // Robot has reached the first line at the edge of the square
          motorForward();   // Drive over the line
          delay(500);
@@ -208,13 +219,13 @@ void starting_square(void){
 
    while (!main_line){
       readLFSsensors();
-      if ((LFSensor[0]== 1 )&&(LFSensor[1]== 1 )&&(LFSensor[2]== 1 )&&(LFSensor[3]== 1 )){
+      if ((LFSensor[1]== 1 )&&(LFSensor[2]== 1 )){
          main_line = 1;   // Robot has reached the main line at the junction
          pos = START_END_BOX;          // Set the current position of the robot to position 1
 
          motorStop();
          delay(1000);
-
+         dir = RIGHT;
          turn90degrees(RIGHT);    // Turn right towards the ramp to go and fetch a block --> this needs to be tested because not currently working
       }
       followLine();  // Just run the same line following program

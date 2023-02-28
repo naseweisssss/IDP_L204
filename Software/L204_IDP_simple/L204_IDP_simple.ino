@@ -47,6 +47,7 @@ void setup()
 void loop() {
   // Should follow the line exactly as it did previously
   followLine();
+  
 
 
   // IN CASE THIS STOPS THINGS WORKING I HAVE CHANGED:

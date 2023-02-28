@@ -2,13 +2,13 @@ int mode = 0;
 
 // Stores the navigation constants
 int pos = 0;// 1 - 5 depending on location
-int target = 0; // Where the robot is trying to go
+int target = 2; // Where the robot is trying to go
 int dir = 0;    // For storing direction turns when get to junctions
-# define START_END_BOX 1
-# define RED_BOX 2
-# define BLOCK1 3
-# define BLOCK2 4
-# define GREEN_BOX 5
+# define START_END_BOX 0
+# define RED_BOX 1
+# define BLOCK1 2
+# define BLOCK2 3
+# define GREEN_BOX 4
 int tight = 0;
 
 // Defines the update frequency of the robot
@@ -42,6 +42,9 @@ const int OrangeLED = 13;
 const int RedLED = 12;              // May need to change the pins
 const int GreenLED = 11;
 const int buttonPin = 9;
+int OrangeLEDState = LOW;
+long interval = 1000;
+long previousMillis = 0;
 
 // Defining the pins for the line sensors
 // LFSensor more to the Left is "0"
@@ -71,3 +74,4 @@ void starting_square();
 void finishing_square();
 void picking_up_block();
 void drop_off_block();
+void ledBlink();

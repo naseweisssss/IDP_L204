@@ -59,10 +59,10 @@ void motorTurn(int direction){
 
 void motorTightTurn(int direction){
   if (direction == LEFT){
-    motorRun(-power / 2, power / 2);
+    motorRun(-100, 100);
   }
   else if (direction == RIGHT){
-    motorRun(power / 2,  - power / 2);
+    motorRun(100,  - 100);
   }
 
   delay(20);

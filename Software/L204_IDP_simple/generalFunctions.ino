@@ -21,6 +21,7 @@ void followLine(void){
   readLFSsensors(); // Reads the sensor
   lineFollowingMode();  // Gets the correct mode depending on the output of the line sensors
   //ledBlink();
+   power = 235;
 
 switch (mode)
    {
@@ -80,8 +81,7 @@ switch (mode)
        break;
 
      case JUNCTION:
-       motorForward();           // Needs to be changed when we want to actually stop at a junction
-       delay(delay_time);
+       mark();
        break;
 
      // case ERROR:
@@ -121,12 +121,32 @@ void mark(void){
 
    motorStop();
    delay(500);
+   motorForward();
+   delay(1200);
    int new_turn = -1 * dir;   // Always need to turn opposite way into junction as out of last junction
-   turn90degrees(new_turn);
-   delay(100);
+   int onLine = 0;
+   backMotorTurn(new_turn);
+   delay(500);
+   while(!onLine){
+    readLFSsensors();
+    if ((new_turn == LEFT) && (LFSensor[2] == 1)){
+      onLine = 1;
+      motorStop();
+      delay(1000);
+    }
+    else if ((new_turn == RIGHT) && (LFSensor[1] == 1)){
+      onLine = 1;
+      motorStop();
+      delay(1000);
+    }
+    backMotorTurn(new_turn);
+    delay(50);
+   }
 
 
-   // switch(pos):
+
+   //switch(pos):
+   
    // Idea for how to do something specific at each junction
   }
 
@@ -171,24 +191,27 @@ void setDestination(void){
 }
 
 void turn90degrees(int direction){
+  Serial.println("running turn90degrees");
    // Function for turning in a specific direction until the robot senses it is back on the line
    int onLine = 0;   // For keeping track of when the turn is completed
 
    while (!onLine){
       readLFSsensors();
       if (direction == RIGHT){
-         if (LFSensor[1] == 1){
+         if (LFSensor[0] == 1){
             onLine = 1;
  
          }
-         motorTurn(RIGHT);       // Need to test that this function is the right way around MIGHT NEED TO CHANGE
+//         iniMotorPower = power;
+         motorTightTurn(RIGHT);       // Need to test that this function is the right way around MIGHT NEED TO CHANGE
       }
       else if (direction == LEFT){
-         if (LFSensor[2] == 1){
+         if (LFSensor[3] == 1){
             onLine = 1;
           
          }
-         motorTurn(LEFT);
+//         iniMotorPower = power;
+         motorTightTurn(LEFT);
       }
       delay(50);     // Might need to adjust so doesn't miss the line
    }
@@ -197,38 +220,46 @@ void turn90degrees(int direction){
 void turn180degrees(){
    // Hardcoded function for turning around when in the squares
    motorTightTurn(LEFT);
-   delay(500);       // Needs to be tuned to get accurate turning around
+   delay(2000);       // Needs to be tuned to get accurate turning around
    motorStop();
 }
 
 void starting_square(void){
+  Serial.println ("running starting_square");
    // function to hardcode leaving the starting square
    int first_line = 0;  // Tracks when robot finds the edge of the square
    int main_line = 0;   // Tracks when robot finds the main line
+   power = 160;
 
    while (!first_line){
       readLFSsensors();
-      if ((LFSensor[1]== 1 )&&(LFSensor[2]== 1 )){
+      if ((LFSensor[1]== 1 )||(LFSensor[2]== 1 )||(LFSensor[0]== 1 )||(LFSensor[3]== 1 )){
+        Serial.println("in line 1");
          first_line = 1;   // Robot has reached the first line at the edge of the square
          motorForward();   // Drive over the line
          delay(500);
       }
       motorForward();
-      delay(100);          //Delay in looking for the line
+      delay(50);          //Delay in looking for the line
    }
 
    while (!main_line){
       readLFSsensors();
-      if ((LFSensor[1]== 1 )&&(LFSensor[2]== 1 )){
+      if ((LFSensor[0]== 1 )||(LFSensor[3]== 1 )){
+                Serial.println("in main line");
          main_line = 1;   // Robot has reached the main line at the junction
          pos = START_END_BOX;          // Set the current position of the robot to position 1
 
          motorStop();
-         delay(1000);
+         delay(500);
          dir = RIGHT;
-         turn90degrees(RIGHT);    // Turn right towards the ramp to go and fetch a block --> this needs to be tested because not currently working
+//         turn90degrees(RIGHT);    // Turn right towards the ramp to go and fetch a block --> this needs to be tested because not currently working
+         motorTightTurn(dir);
+         delay(1200);      
       }
+      
       followLine();  // Just run the same line following program
+      delay (50);
    }
 
 }

@@ -41,7 +41,7 @@ void setup()
 
 
   // Theoretical code for starting loop when everything is started
-  //starting_square();
+  starting_square();
 }
 
 void loop() {

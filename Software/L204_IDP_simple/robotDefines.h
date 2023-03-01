@@ -31,8 +31,8 @@ int colour;
 
 
 // Defining constants for robot speed and steering smoothness/reactivity
-const int power = 160;     
-const float steeringSmoothness = 0.7;
+int power = 235;     
+const float steeringSmoothness = 1;
 int iniMotorPower = power * steeringSmoothness; // This function is later overwritten relative to power
 const float adj = 1;          // In case one motor drives at different speed to the other so the robot will drive in a straight line
 const int spinSpeed = 100;          // Controls how case spins 180 in boxes
@@ -63,6 +63,7 @@ void lineFollowingMode();
 void motorStop();
 void motorForward();
 void motorTurn(int direction);
+void backMotorTurn(int direction);
 void motorTightTurn(int direction);
 void motorBackward();
 void motorRun(int spd1, int spd2);

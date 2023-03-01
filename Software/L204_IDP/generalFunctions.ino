@@ -369,7 +369,7 @@ void finishing_square(void){
          int  new_turn = -1 * dir;  //i.e. come from left, turn right etc
          dir = new_turn;
          motorTightTurn(new_turn);
-         motorFoward();
+         motorForward();
          delay(500);
          motorStop(); //motor stop at finishing square
 }

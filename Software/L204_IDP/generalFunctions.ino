@@ -81,6 +81,9 @@ switch (mode)
        break;
 
      case JUNCTION:
+     motorStop();
+     
+     delay(1000);
        mark();
        break;
 
@@ -101,7 +104,7 @@ void block_junction_case(void){
    motorForward();
    delay(1400);
    int new_turn = -1 * dir;   // Always need to turn opposite way into junction as out of last junction
-   dir = new_turn;
+   //dir = new_turn;
    int onLine = 0;
    backMotorTurn(new_turn); // robot turning into the junction
    delay(1000);
@@ -146,8 +149,8 @@ void block_junction_case(void){
    
    
    turn180degrees(RIGHT);
-   delay(2000);
-   
+   delay(1000);
+   dir = RIGHT;
    
 
   
@@ -198,7 +201,8 @@ if (pos == target){
 
    }  
    //  assuming it has aligned with the straight line in the junction
-   // picking_up_block();
+   // dropping_block();
+   iteration ++;
    
    
    Serial.println("line found");
@@ -222,7 +226,7 @@ if (pos == target){
    
    
    turn180degrees(-dir);
-   delay(2000);
+   delay(500);
    
    
 
@@ -256,10 +260,19 @@ void mark(void){
    temp--;
   }
 
-  temp = temp % 4;
+  temp = temp % 5;
 
-  if (temp == 0){pos = 0;}
-  else {pos = temp;}
+  pos = temp;
+
+  if (pos == 1){
+    outside_junction = 1; 
+  }
+
+  if (pos == 4){
+    motorTightTurn(LEFT);
+    delay(200);
+    motorStop();
+  }
 
 // switch case for positions
 
@@ -319,24 +332,33 @@ void setDestination(void){
 
    switch(pos){
     
-      case BLOCK1: case BLOCK2:
+      case BLOCK1: 
+//      case BLOCK2:
       
          colour = colourDetection();
          if (colour == 1){
+          Serial.println("Target set to 4");
             target = 4;
          }
          else if (colour == 2){
+          Serial.println("Target set to 1");
             target = 1;
          }
+         dir = LEFT;
          break;
-      
-      case RED_BOX:
-         target = 2;    // Should turn right and go over the ramp to the closest location
-         dir = RIGHT;
-         // Or if at time limit go back to END
-         break;
+         case RED_BOX:
+           if (iteration == 2){
+              target = 0;}
+           target = 2;    // Should turn right and go over the ramp to the closest location
+           dir = RIGHT;
+           // Or if at time limit go back to END
+           break;
 
       case GREEN_BOX:
+         if (iteration == 2){
+             target = 0;}
+         
+         
          target = 3;    // Should turn left and go out of the tunnel
          dir = LEFT;
          // Or if at time limit go back to END
@@ -375,21 +397,22 @@ void turn180degrees(int direction){
    // Hardcoded function for turning around when in the squares
    
    motorTightTurn(direction);
-   //delay(50);
+   delay(500);
    
-//   int onLine = 0;
-//   while(!onLine){
-//    if (LFSensor[1] == 1)
-//    {
-//      onLine = 1;
-//      motorStop();
-//      delay(1000);
-//    }
-//    else{
-//    motorTightTurn(direction);  
-//    delay(50);
-//    }
-//     }
+   int onLine = 0;
+   while(!onLine){
+    readLFSsensors();
+    if ((LFSensor[2] == 1)|| (LFSensor[1]==1))
+    {
+      onLine = 1;
+      motorStop();
+      delay(1000);
+    }
+    else{
+    motorTightTurn(direction);  
+    delay(50);
+    }
+     }
 }
 
 void starting_square(void){
@@ -398,10 +421,10 @@ void starting_square(void){
    int first_line = 0;  // Tracks when robot finds the edge of the square
    int main_line = 0;   // Tracks when robot finds the main line
    power = 160;
-
+   int line_following = 0;
    while (!first_line){
       readLFSsensors();
-      if ((LFSensor[1]== 1 )||(LFSensor[2]== 1 )||(LFSensor[0]== 1 )||(LFSensor[3]== 1 )){
+      if ((LFSensor[1]== 1 )||(LFSensor[2]== 1 )){
         Serial.println("in line 1");
          first_line = 1;   // Robot has reached the first line at the edge of the square
          motorForward();   // Drive over the line
@@ -423,12 +446,14 @@ void starting_square(void){
          dir = RIGHT;
 //         turn90degrees(RIGHT);    // Turn right towards the ramp to go and fetch a block 
          motorTightTurn(dir);
-         delay(1200);      
+         delay(1600);      
       }
       
       followLine();  // Just run the same line following program
       delay (50);
    }
+
+
 
 }
 

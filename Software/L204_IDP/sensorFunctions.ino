@@ -71,9 +71,9 @@ void lineFollowingMode(){
 
 
 // Code for normal line following (not the corners or the junctions)
-  if(     (LFSensor[0]== 0 )&&(LFSensor[1]== 1 )&&(LFSensor[2]== 0 )&&(LFSensor[3]== 0 ))  {mode = RIGHT_LINE; tight = 0; iniMotorPower = power * steeringSmoothness;}  // Allows for smoother steering as there is less slowing down from the inside wheel
-  else if((LFSensor[0]== 0 )&&(LFSensor[1]== 0 )&&(LFSensor[2]== 0 )&&(LFSensor[3]== 0 ))  {mode = ON_LINE; tight = 0; iniMotorPower = power * steeringSmoothness;}
-  else if((LFSensor[0]== 0 )&&(LFSensor[1]== 0 )&&(LFSensor[2]== 1 )&&(LFSensor[3]== 0 ))  {mode = LEFT_LINE; tight = 0; iniMotorPower = power * steeringSmoothness;}
+  if(    (LFSensor[1]== 1 )&&(LFSensor[2]== 0 ))  {mode = RIGHT_LINE; tight = 0; iniMotorPower = power * steeringSmoothness;}  // Allows for smoother steering as there is less slowing down from the inside wheel
+  else if((LFSensor[1]== 0 )&&(LFSensor[2]== 0 ))  {mode = ON_LINE; tight = 0; iniMotorPower = power * steeringSmoothness;}
+  else if((LFSensor[1]== 0 )&&(LFSensor[2]== 1 ))  {mode = LEFT_LINE; tight = 0; iniMotorPower = power * steeringSmoothness;}
 
 
 // if((LFSensor[1]== 1 )&&(LFSensor[2]== 0 ))  {mode = RIGHT_LINE; tight = 0; iniMotorPower = power * steeringSmoothness;}  // Allows for smoother steering as there is less slowing down from the inside wheel
@@ -87,8 +87,19 @@ void lineFollowingMode(){
 
 // Code which detects the presence of a junction  
   //else if((LFSensor[0]== 1 )&&(LFSensor[1]== 1 )&&(LFSensor[2]== 1 )&&(LFSensor[3]== 0 ))  {mode = JUNCTION;}   // Don't think this state is possible
-  else if((LFSensor[0]== 1 )&&(LFSensor[1]== 1 )&&(LFSensor[2]== 0 )&&(LFSensor[3]== 0 ))  {mode = JUNCTION;} // Junction
-  else if((LFSensor[0]== 0 )&&(LFSensor[1]== 0 )&&(LFSensor[2]== 1 )&&(LFSensor[3]== 1 ))  {mode = JUNCTION;} // Junction
+  
+  if (outside_junction == 0){
+  if((     LFSensor[0]== 1 )&&(LFSensor[1]== 1 )&&(LFSensor[2]== 0 )&&(LFSensor[3]== 0 ))  {mode = JUNCTION;}
+  else if((     LFSensor[0]== 0 )&&(LFSensor[1]== 0 )&&(LFSensor[2]== 1 )&&(LFSensor[3]== 1 ))  {mode = JUNCTION;}// Junction
+  else if((LFSensor[0]== 1 )&&(LFSensor[3]== 1 ))  {mode = ON_LINE;}
+  }
+  else if (outside_junction == 1){
+    if((     LFSensor[0]== 1 )&&(LFSensor[3]== 0 ))  {mode = JUNCTION;}
+    else if((     LFSensor[0]== 0 )&&(LFSensor[3]== 1 ))  {mode = JUNCTION;}// Junction
+    
+  }
+  
+ // Junction
   //else if((LFSensor[0]== 0 )&&(LFSensor[1]== 1 )&&(LFSensor[2]== 1 )&&(LFSensor[3]== 1 ))  {mode = JUNCTION;} // Leaving box
 
 // Code for error states --> not currently using as for leaving the squares
@@ -104,7 +115,7 @@ void lineFollowingMode(){
 
 int colourDetection(){
   // Function that detects the colour of the block depending on the sensors from the Arduino reading
-  int colour = 1;
+  int colour = 2;
 
   return colour;
 }

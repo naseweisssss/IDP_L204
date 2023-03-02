@@ -1,9 +1,11 @@
 int mode = 0;
+int outside_junction = 0;
 
 // Stores the navigation constants
 int pos = 0;// 1 - 5 depending on location
 int target = 2; // Where the robot is trying to go
 int dir = 0;    // For storing direction turns when get to junctions
+int iteration = 0; // Current only go for 2 rounds
 # define START_END_BOX 0
 # define RED_BOX 1
 # define BLOCK1 2
@@ -48,10 +50,10 @@ long previousMillis = 0;
 
 // Defining the pins for the line sensors
 // LFSensor more to the Left is "0"
-const int lineFollowSensor0 = 7; 
-const int lineFollowSensor1 = 6; 
-const int lineFollowSensor2 = 5; 
-const int lineFollowSensor3 = 4;
+const int lineFollowSensor0 = 4; 
+const int lineFollowSensor1 = 5; 
+const int lineFollowSensor2 = 6; 
+const int lineFollowSensor3 = 7;
 int LFSensor[4]={0, 0, 0, 0};       // Array for storing the line sensor readings in
 
 // Defining directions

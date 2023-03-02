@@ -70,7 +70,7 @@ void motorRun(int spd1, int spd2);
 void mark();
 void setDestination();
 void turn90degrees(int direction);
-void turn180degrees();
+void turn180degrees(int direction);
 void starting_square();
 void finishing_square();
 void picking_up_block();

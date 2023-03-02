@@ -99,39 +99,62 @@ void block_junction_case(void){
    motorStop();
    delay(500);
    motorForward();
-   delay(1200);
+   delay(1400);
    int new_turn = -1 * dir;   // Always need to turn opposite way into junction as out of last junction
    dir = new_turn;
    int onLine = 0;
    backMotorTurn(new_turn); // robot turning into the junction
-   delay(500);
+   delay(1000);
    while(!onLine){
     readLFSsensors();
-    if ((dir == LEFT) && (LFSensor[2] == 1)){
+    if ((new_turn == LEFT) && (LFSensor[1] == 1)){
       onLine = 1;
       motorStop();
       delay(1000);
     }
-    else if ((new_turn == RIGHT) && (LFSensor[1] == 1))
+    else if ((new_turn == RIGHT) && (LFSensor[2] == 1))
     {
       onLine = 1;
       motorStop();
       delay(1000);
     }
-    backMotorTurn(new_turn);  // not sure what is this for
+    else{
+      Serial.println("finding junction  lines");    
+      backMotorTurn(new_turn);  
     delay(50);
+    }
 
+   
+    
+
+   }  
    //  assuming it has aligned with the straight line in the junction
    // picking_up_block();
-   // setDestination();
-   turn180degrees();
-   motorTightTurn(dir);
-   delay(1200); 
+   
+   
+   Serial.println("line found");
 
-   }   
+   previousMillis = millis();
+   while ((millis() - previousMillis) < 850){
+    followLine();
+    delay(50);
+   }
+   motorStop();
+   delay(1000);
+   // Something is happening to pick up the block and sense the colour
+   setDestination();
+   
+   
+   turn180degrees(RIGHT);
+   delay(2000);
+   
+   
+
+  
 
   }
  else if (pos != target){
+    Serial.println("position not in target");
    // Not sure if this is the best way of avoid a junction being registered twice as hardcoding
    motorForward();
    delay(1000);
@@ -139,13 +162,13 @@ void block_junction_case(void){
 }
 
 void color_junction_case(void){
-   if (pos == target){
+if (pos == target){
    // Robot is at the desired location so do something
 
    motorStop();
    delay(500);
    motorForward();
-   delay(1200);
+   delay(1400);
    int new_turn = -1 * dir;   // Always need to turn opposite way into junction as out of last junction
    dir = new_turn;
    int onLine = 0;
@@ -153,30 +176,61 @@ void color_junction_case(void){
    delay(500);
    while(!onLine){
     readLFSsensors();
-    if ((dir == LEFT) && (LFSensor[2] == 1)){
+    if ((new_turn == LEFT) && (LFSensor[1] == 1)){
       onLine = 1;
       motorStop();
       delay(1000);
     }
-    else if ((new_turn == RIGHT) && (LFSensor[1] == 1))
+    else if ((new_turn == RIGHT) && (LFSensor[2] == 1))
     {
       onLine = 1;
       motorStop();
       delay(1000);
     }
-    backMotorTurn(new_turn);  // not sure what is this for
+    else{
+      Serial.println("finding junction  lines");    
+      backMotorTurn(new_turn);  
     delay(50);
+    }
 
+   
+    
+
+   }  
    //  assuming it has aligned with the straight line in the junction
-   // drop_off_block();
-   // setDestination();
-   turn180degrees();   //assume this works
-   starting_square();
+   // picking_up_block();
+   
+   
+   Serial.println("line found");
 
-   }   
+   previousMillis = millis();
+   while ((millis() - previousMillis) < 1000){
+    followLine();
+    delay(50);
+   }
+   motorStop();
+   delay(1000);
+   // Something is happening to pick up the block and sense the colour
+
+   previousMillis = millis();
+   while ((millis() - previousMillis) < 1000){
+    motorBackward();
+    delay(50);
+   }
+   motorStop();
+   setDestination();
+   
+   
+   turn180degrees(-dir);
+   delay(2000);
+   
+   
+
+  
 
   }
  else if (pos != target){
+    Serial.println("position not in target");
    // Not sure if this is the best way of avoid a junction being registered twice as hardcoding
    motorForward();
    delay(1000);
@@ -317,11 +371,25 @@ void turn90degrees(int direction){
    }
 }
 
-void turn180degrees(){
+void turn180degrees(int direction){
    // Hardcoded function for turning around when in the squares
-   motorTightTurn(LEFT);
-   delay(2000);       // Needs to be tuned to get accurate turning around
-   motorStop();
+   
+   motorTightTurn(direction);
+   //delay(50);
+   
+//   int onLine = 0;
+//   while(!onLine){
+//    if (LFSensor[1] == 1)
+//    {
+//      onLine = 1;
+//      motorStop();
+//      delay(1000);
+//    }
+//    else{
+//    motorTightTurn(direction);  
+//    delay(50);
+//    }
+//     }
 }
 
 void starting_square(void){

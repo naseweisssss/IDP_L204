@@ -82,8 +82,8 @@ void lineFollowingMode(){
 
 
 // Code allowing for tighter turning at the corners --> the only time just a single outside sensor should be on is when the robot doesn't turn enough for a corner
-  else if((LFSensor[0]== 1 )&&(LFSensor[1]== 0 )&&(LFSensor[2]== 0 )&&(LFSensor[3]== 0 ))  {mode = RIGHT_LINE; tight = 0; iniMotorPower = power * steeringSmoothness; }
-  else if((LFSensor[0]== 0 )&&(LFSensor[1]== 0 )&&(LFSensor[2]== 0 )&&(LFSensor[3]== 1 ))  {mode = LEFT_LINE; tight = 0; iniMotorPower = power * steeringSmoothness; }
+  //else if((LFSensor[0]== 1 )&&(LFSensor[1]== 0 )&&(LFSensor[2]== 0 )&&(LFSensor[3]== 0 ))  {mode = RIGHT_LINE; tight = 0; iniMotorPower = power * steeringSmoothness; }
+  //else if((LFSensor[0]== 0 )&&(LFSensor[1]== 0 )&&(LFSensor[2]== 0 )&&(LFSensor[3]== 1 ))  {mode = LEFT_LINE; tight = 0; iniMotorPower = power * steeringSmoothness; }
 
 // Code which detects the presence of a junction  
   //else if((LFSensor[0]== 1 )&&(LFSensor[1]== 1 )&&(LFSensor[2]== 1 )&&(LFSensor[3]== 0 ))  {mode = JUNCTION;}   // Don't think this state is possible

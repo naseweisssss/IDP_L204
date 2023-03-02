@@ -172,10 +172,11 @@ if (pos == target){
    delay(500);
    motorForward();
    delay(1400);
-   int new_turn = -1 * dir;   // Always need to turn opposite way into junction as out of last junction
-   dir = new_turn;
+   // Don't need to change the direction of turning as still set to right
+   //int new_turn = -1 * dir;   // Always need to turn opposite way into junction as out of last junction
+   //dir = new_turn;
    int onLine = 0;
-   backMotorTurn(new_turn); // robot turning into the junction
+   backMotorTurn(dir); // robot turning into the junction
    delay(500);
    while(!onLine){
     readLFSsensors();
@@ -216,6 +217,8 @@ if (pos == target){
    delay(1000);
    // Something is happening to pick up the block and sense the colour
 
+
+  // Could potentially change this to a straight delay function and make it shorter than the previous part before turning and cutting the corner
    previousMillis = millis();
    while ((millis() - previousMillis) < 1000){
     motorBackward();
@@ -224,9 +227,22 @@ if (pos == target){
    motorStop();
    setDestination();
    
-   
+   if (pos == GREEN_BOX){
+    if (iteration == TOTAL_ITER){
+      dir == RIGHT;
+    } else {
+    dir = LEFT;
+    }
+   }
+   else if (pos == RED_BOX){
+    if (iteration == TOTAL_ITER){
+      dir == RIGHT;
+    } else {
+    dir = LEFT;
+    }
+   }
    turn180degrees(-dir);
-   delay(500);
+   //delay(500);
    
    
 
@@ -244,25 +260,27 @@ if (pos == target){
 // TODO - make all the LED commands work
 void mark(void){
   // Keeps track of the current position of the robot
-  int temp = pos;
+  //int temp = pos;
   if (dir == RIGHT){
    // Last turned right at a junction so is moving anti-clockwise
    
    // Slightly janky code to make sure no errors
    
-   temp++;
+   //temp++;
+   pos++;
   }
 
   else if (dir == LEFT){
    // Last turned left at a junction so is moving clockwise
    
    // Slightly janky code to make sure no errors
-   temp--;
+   //temp--;
+   pos--;
   }
 
-  temp = temp % 5;
-
-  pos = temp;
+  //temp = temp % 5;
+  //pos = temp;
+  pos = pos % 5;
 
   if (pos == 1){
     outside_junction = 1; 
@@ -333,7 +351,7 @@ void setDestination(void){
    switch(pos){
     
       case BLOCK1: 
-//      case BLOCK2:
+      //case BLOCK2:
       
          colour = colourDetection();
          if (colour == 1){
@@ -346,16 +364,30 @@ void setDestination(void){
          }
          dir = LEFT;
          break;
-         case RED_BOX:
-           if (iteration == 2){
-              target = 0;}
-           target = 2;    // Should turn right and go over the ramp to the closest location
-           dir = RIGHT;
-           // Or if at time limit go back to END
-           break;
+
+      case BLOCK2:
+         colour = colourDetection();
+         if (colour == 1){
+          Serial.println("Target set to 4");
+            target = 4;
+         }
+         else if (colour == 2){
+          Serial.println("Target set to 1");
+            target = 1;
+         }
+         dir = LEFT;
+         break;
+
+      case RED_BOX:
+        if (iteration == TOTAL_ITER){
+          target = 0;}
+        target = 2;    // Should turn right and go over the ramp to the closest location
+        dir = RIGHT;
+        // Or if at time limit go back to END
+        break;
 
       case GREEN_BOX:
-         if (iteration == 2){
+         if (iteration == TOTAL_ITER){
              target = 0;}
          
          
@@ -459,12 +491,56 @@ void starting_square(void){
 
 void finishing_square(void){
    // Code for getting back into the END square from the junction
-         int  new_turn = -1 * dir;  //i.e. come from left, turn right etc
-         dir = new_turn;
-         motorTightTurn(new_turn);
-         motorForward();
-         delay(500);
-         motorStop(); //motor stop at finishing square
+    motorForward();
+    delay(1400);
+    int new_turn = -1 * dir;   // Always need to turn opposite way into junction as out of last junction
+    //dir = new_turn;
+    int onLine = 0;
+    backMotorTurn(new_turn); // robot turning into the junction
+    delay(1000);
+    while(!onLine){
+      readLFSsensors();
+      if ((new_turn == LEFT) && (LFSensor[1] == 1)){
+        onLine = 1;
+        motorStop();
+        delay(1000);
+      }
+      else if ((new_turn == RIGHT) && (LFSensor[2] == 1))
+      {
+        onLine = 1;
+        motorStop();
+        delay(1000);
+      }
+      else{
+        Serial.println("finding junction  lines");    
+        backMotorTurn(new_turn);  
+      delay(50);
+      }
+   }  
+
+   int front_line = 0;
+   while (!front_line){
+    readLFSensors();
+    if ((LFSensor[0] == 1) || (LFSensor[3] == 1)){
+      front_line = 1;
+      delay(100);
+    }
+    followLine();
+   }
+
+   previousMillis = millis();
+   while ((millis() - previousMillis) < 2500){
+    motorForward();
+    delay(50);
+   }
+   motorStop();
+   Serial.println("The robot should have returned to the starting square");
+   while (1){
+    // Create an infinite loop to stop the robot moving
+    delay(5000);
+    Serial.println("In an infinite loop");
+   }
+
 }
 
 void picking_up_block(void){

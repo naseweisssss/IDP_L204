@@ -6,6 +6,7 @@ int pos = 0;// 1 - 5 depending on location
 int target = 2; // Where the robot is trying to go
 int dir = 0;    // For storing direction turns when get to junctions
 int iteration = 0; // Current only go for 2 rounds
+int TOTAL_ITER = 2; // Total number of target rounds
 # define START_END_BOX 0
 # define RED_BOX 1
 # define BLOCK1 2

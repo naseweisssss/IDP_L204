@@ -33,6 +33,9 @@ void setup()
   pinMode(lineFollowSensor3, INPUT);
 
 
+  //startswitch
+  pinMode(buttonPin, INPUT);
+
 
 
   //-----------------------------------------
@@ -41,7 +44,19 @@ void setup()
 
 
   // Theoretical code for starting loop when everything is started
-  starting_square();
+;
+/*buttonPressed = 0;
+while (buttonPressed!= 1){
+    readSwitch();
+    if (Buttonsensor == 1){
+      buttonPressed = 1;
+      starting_square();
+    
+    }
+    delay(20);
+}*/
+
+starting_square();
 }
 
 void loop() {

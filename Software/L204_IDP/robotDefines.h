@@ -15,7 +15,7 @@ int TOTAL_ITER = 2; // Total number of target rounds
 int tight = 0;
 
 // Defines the update frequency of the robot
-int delay_time = 50; // Delay between each sensor reading
+int delay_time = 30; // Delay between each sensor reading
 
 
 // Defining the constants for the colour sensing#
@@ -55,7 +55,8 @@ const int lineFollowSensor0 = 4;
 const int lineFollowSensor1 = 5; 
 const int lineFollowSensor2 = 6; 
 const int lineFollowSensor3 = 7;
-int LFSensor[4]={0, 0, 0, 0};       // Array for storing the line sensor readings in
+int LFSensor[4]={0, 0, 0, 0};  
+int Buttonsensor;// Array for storing the line sensor readings in
 
 // Defining directions
 #define RIGHT 1

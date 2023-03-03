@@ -81,9 +81,9 @@ switch (mode)
        break;
 
      case JUNCTION:
-     motorStop();
+     //motorStop();
      
-     delay(1000);
+     //delay(1000);
        mark();
        break;
 
@@ -102,7 +102,7 @@ void block_junction_case(void){
    motorStop();
    delay(500);
    motorForward();
-   delay(1400);
+   delay(1250);
    int new_turn = -1 * dir;   // Always need to turn opposite way into junction as out of last junction
    //dir = new_turn;
    int onLine = 0;
@@ -149,7 +149,7 @@ void block_junction_case(void){
    
    
    turn180degrees(RIGHT);
-   delay(1000);
+   //delay(1000);
    dir = RIGHT;
    
 
@@ -171,21 +171,27 @@ if (pos == target){
    motorStop();
    delay(500);
    motorForward();
-   delay(1400);
+   if (pos == 4){
+    delay(800);
+   }
+   else if (pos == 1){
+    delay(1300);
+   }
+   
    // Don't need to change the direction of turning as still set to right
    //int new_turn = -1 * dir;   // Always need to turn opposite way into junction as out of last junction
    //dir = new_turn;
    int onLine = 0;
    backMotorTurn(dir); // robot turning into the junction
-   delay(500);
+   delay(1000);
    while(!onLine){
     readLFSsensors();
-    if ((new_turn == LEFT) && (LFSensor[1] == 1)){
+    if ((dir == LEFT) && (LFSensor[1] == 1)){
       onLine = 1;
       motorStop();
       delay(1000);
     }
-    else if ((new_turn == RIGHT) && (LFSensor[2] == 1))
+    else if ((dir == RIGHT) && (LFSensor[2] == 1))
     {
       onLine = 1;
       motorStop();
@@ -193,8 +199,8 @@ if (pos == target){
     }
     else{
       Serial.println("finding junction  lines");    
-      backMotorTurn(new_turn);  
-    delay(50);
+      backMotorTurn(dir);  
+    delay(20);
     }
 
    
@@ -204,43 +210,55 @@ if (pos == target){
    //  assuming it has aligned with the straight line in the junction
    // dropping_block();
    iteration ++;
+   Serial.print("The iteration number is ");
+   Serial.println(iteration);
    
    
    Serial.println("line found");
 
    previousMillis = millis();
-   while ((millis() - previousMillis) < 1000){
+   while ((millis() - previousMillis) < 700){
     followLine();
     delay(50);
    }
    motorStop();
-   delay(1000);
-   // Something is happening to pick up the block and sense the colour
+   delay(50);
+   motorForward();
+   delay(500);
+   motorStop();
+   delay(1000);   // Dropping off the block
+   motorBackward();
+   delay(800);
+   
 
 
   // Could potentially change this to a straight delay function and make it shorter than the previous part before turning and cutting the corner
-   previousMillis = millis();
-   while ((millis() - previousMillis) < 1000){
-    motorBackward();
-    delay(50);
-   }
+
    motorStop();
    setDestination();
    
    if (pos == GREEN_BOX){
     if (iteration == TOTAL_ITER){
-      dir == RIGHT;
+      dir = RIGHT;
+      target = 0;
+      Serial.println("At iteration number");
     } else {
     dir = LEFT;
+    Serial.println("Not at iteration number");
     }
    }
    else if (pos == RED_BOX){
     if (iteration == TOTAL_ITER){
-      dir == RIGHT;
+      dir = LEFT;
+      target = 0;
+      Serial.println("At iteration number");
     } else {
-    dir = LEFT;
+    dir = RIGHT;
+    Serial.println("Not at iteration number");
     }
    }
+   motorTightTurn(-dir);
+   delay(800);
    turn180degrees(-dir);
    //delay(500);
    
@@ -287,9 +305,12 @@ void mark(void){
   }
 
   if (pos == 4){
-    motorTightTurn(LEFT);
+    motorTightTurn(RIGHT);
     delay(200);
-    motorStop();
+    motorForward();
+    delay(150);
+    turn180degrees(LEFT);
+    
   }
 
 // switch case for positions
@@ -438,11 +459,11 @@ void turn180degrees(int direction){
     {
       onLine = 1;
       motorStop();
-      delay(1000);
+      delay(10);
     }
     else{
     motorTightTurn(direction);  
-    delay(50);
+    delay(20);
     }
      }
 }
@@ -452,7 +473,7 @@ void starting_square(void){
    // function to hardcode leaving the starting square
    int first_line = 0;  // Tracks when robot finds the edge of the square
    int main_line = 0;   // Tracks when robot finds the main line
-   power = 160;
+   //power = 160;
    int line_following = 0;
    while (!first_line){
       readLFSsensors();
@@ -474,11 +495,11 @@ void starting_square(void){
          pos = START_END_BOX;          // Set the current position of the robot to position 0
 
          motorStop();
-         delay(500);
+         delay(50);
          dir = RIGHT;
 //         turn90degrees(RIGHT);    // Turn right towards the ramp to go and fetch a block 
          motorTightTurn(dir);
-         delay(1600);      
+         delay(1400);      // used to be 1600 when the power was 100
       }
       
       followLine();  // Just run the same line following program
@@ -491,21 +512,23 @@ void starting_square(void){
 
 void finishing_square(void){
    // Code for getting back into the END square from the junction
+   motorStop();
+   delay(1000);
     motorForward();
-    delay(1400);
-    int new_turn = -1 * dir;   // Always need to turn opposite way into junction as out of last junction
+    delay(1250);
+    //int new_turn = -1 * dir;   // Always need to turn opposite way into junction as out of last junction
     //dir = new_turn;
     int onLine = 0;
-    backMotorTurn(new_turn); // robot turning into the junction
+    backMotorTurn(dir); // robot turning into the junction
     delay(1000);
     while(!onLine){
       readLFSsensors();
-      if ((new_turn == LEFT) && (LFSensor[1] == 1)){
+      if ((dir == LEFT) && (LFSensor[1] == 1)){
         onLine = 1;
         motorStop();
         delay(1000);
       }
-      else if ((new_turn == RIGHT) && (LFSensor[2] == 1))
+      else if ((dir == RIGHT) && (LFSensor[2] == 1))
       {
         onLine = 1;
         motorStop();
@@ -513,14 +536,14 @@ void finishing_square(void){
       }
       else{
         Serial.println("finding junction  lines");    
-        backMotorTurn(new_turn);  
+        backMotorTurn(dir);  
       delay(50);
       }
    }  
 
    int front_line = 0;
    while (!front_line){
-    readLFSensors();
+    readLFSsensors();
     if ((LFSensor[0] == 1) || (LFSensor[3] == 1)){
       front_line = 1;
       delay(100);
@@ -528,11 +551,8 @@ void finishing_square(void){
     followLine();
    }
 
-   previousMillis = millis();
-   while ((millis() - previousMillis) < 2500){
-    motorForward();
-    delay(50);
-   }
+   motorForward();
+   delay(950);
    motorStop();
    Serial.println("The robot should have returned to the starting square");
    while (1){

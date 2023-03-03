@@ -26,7 +26,9 @@ New line sensor options:
 0 0 0 0        0 Robot found no line: turn 180o //TODO: Determine something to do
 
 */
-
+void readSwitch(){
+  Buttonsensor = digitalRead(buttonPin);
+}
 
 
 void readLFSsensors() {

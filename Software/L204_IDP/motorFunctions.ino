@@ -23,7 +23,7 @@ void motorRun(int  spd1, int  spd2){
 void motorStop()
 {
   motorRun(0, 0);
-  delay(200);
+  delay(20);
 }
 
 //--------------------------------------------- 
@@ -40,7 +40,7 @@ void motorBackward()
 {
 //  leftServo.writeMicroseconds(1500 + power);
 //  rightServo.writeMicroseconds(1500 - power);
-motorRun(power/2, power*adj/2);
+motorRun(-power,- power*adj);
 delay(20);
 }
 
@@ -71,10 +71,10 @@ void backMotorTurn(int direction){
 void motorTightTurn(int direction){
   
   if (direction == LEFT){
-    motorRun(100, -100);
+    motorRun(power/2, -power/2);
   }
   else if (direction == RIGHT){
-    motorRun(-100,  100);
+    motorRun(-power/2,  power/2);
   }
 
   delay(20);

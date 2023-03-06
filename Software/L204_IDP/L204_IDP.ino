@@ -12,6 +12,7 @@ String device;
 Adafruit_MotorShield AFMS = Adafruit_MotorShield();
 Adafruit_DCMotor *myMotor_1 = AFMS.getMotor(4);
 Adafruit_DCMotor *myMotor_2 = AFMS.getMotor(3);
+Servo myservo;
 
 void setup()
 {
@@ -20,7 +21,7 @@ void setup()
   myMotor_2->setSpeed(iniMotorPower);
   Serial.begin(9600);
 
-  
+
 
   
   pinMode(OrangeLED, OUTPUT);
@@ -50,6 +51,7 @@ while (buttonPressed!= 1){
     readSwitch();
     if (Buttonsensor == 1){
       buttonPressed = 1;
+      delay(1500);
       starting_square();
     
     }
@@ -57,9 +59,11 @@ while (buttonPressed!= 1){
 }*/
 
 starting_square();
+ledBlink();
 }
 
 void loop() {
+  
   // Should follow the line exactly as it did previously
   followLine();
   

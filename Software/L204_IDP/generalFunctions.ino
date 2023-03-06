@@ -11,7 +11,7 @@ void ledBlink(void)
       OrangeLEDState = LOW;
       
     // set the LED with the ledState of the variable:
-    //digitalWrite(OrangeLED, ledState);
+    digitalWrite(OrangeLED, OrangeLEDState);
   }
 }
 
@@ -100,7 +100,7 @@ void block_junction_case(void){
    // Robot is at the desired location so do something
 
    motorStop();
-   delay(500);
+   delay(10);
    motorForward();
    delay(1250);
    int new_turn = -1 * dir;   // Always need to turn opposite way into junction as out of last junction
@@ -113,13 +113,13 @@ void block_junction_case(void){
     if ((new_turn == LEFT) && (LFSensor[1] == 1)){
       onLine = 1;
       motorStop();
-      delay(1000);
+      delay(10);
     }
     else if ((new_turn == RIGHT) && (LFSensor[2] == 1))
     {
       onLine = 1;
       motorStop();
-      delay(1000);
+      delay(10);
     }
     else{
       Serial.println("finding junction  lines");    
@@ -132,13 +132,13 @@ void block_junction_case(void){
 
    }  
    //  assuming it has aligned with the straight line in the junction
-   // picking_up_block();
+    picking_up_block();
    
    
    Serial.println("line found");
 
    previousMillis = millis();
-   while ((millis() - previousMillis) < 850){
+   while ((millis() - previousMillis) < 750){
     followLine();
     delay(50);
    }
@@ -160,7 +160,7 @@ void block_junction_case(void){
     Serial.println("position not in target");
    // Not sure if this is the best way of avoid a junction being registered twice as hardcoding
    motorForward();
-   delay(1000);
+   delay(800);
   }
 }
 
@@ -208,7 +208,7 @@ if (pos == target){
 
    }  
    //  assuming it has aligned with the straight line in the junction
-   // dropping_block();
+   drop_off_block();
    iteration ++;
    Serial.print("The iteration number is ");
    Serial.println(iteration);
@@ -271,7 +271,7 @@ if (pos == target){
     Serial.println("position not in target");
    // Not sure if this is the best way of avoid a junction being registered twice as hardcoding
    motorForward();
-   delay(1000);
+   delay(800);
   }
 }
 
@@ -304,12 +304,36 @@ void mark(void){
     outside_junction = 1; 
   }
 
-  if (pos == 4){
+  if (pos == 4 ){
     motorTightTurn(RIGHT);
     delay(200);
     motorForward();
-    delay(150);
+    delay(200);
     turn180degrees(LEFT);
+    
+  }
+    if ((pos == 3) && (dir == RIGHT)){
+    motorTightTurn(LEFT);
+    delay(300);
+    motorForward();
+    delay(200);
+    int onLine = 0;
+     while(!onLine){
+      readLFSsensors();
+
+
+      if ((LFSensor[1] == 1)){
+        onLine = 1;
+        motorTightTurn(dir); 
+        delay(20);
+        motorStop();
+        delay(20);
+      }
+          else{
+    motorTightTurn(dir);  
+    delay(20);
+    }
+}
     
   }
 
@@ -326,7 +350,7 @@ void mark(void){
 
          else if (target != 0){
          motorForward();
-         delay(1000);
+         delay(800);
          }
          break;
 
@@ -450,7 +474,7 @@ void turn180degrees(int direction){
    // Hardcoded function for turning around when in the squares
    
    motorTightTurn(direction);
-   delay(500);
+   delay(300);
    
    int onLine = 0;
    while(!onLine){
@@ -458,15 +482,39 @@ void turn180degrees(int direction){
     if ((LFSensor[2] == 1)|| (LFSensor[1]==1))
     {
       onLine = 1;
+      motorTightTurn(direction);  
+      delay(60);
       motorStop();
       delay(10);
     }
     else{
     motorTightTurn(direction);  
     delay(20);
+    }} 
+
+
+/*    while(!onLine){
+      readLFSsensors();
+      if ((LFSensor[2] == 1) && (direction == LEFT)){
+        onLine = 1;
+            motorTightTurn(direction);  
+    delay(20);
+        motorStop();
+        delay(20);
+      }
+
+      else if ((LFSensor[1] == 1) && (direction == RIGHT)){
+        onLine = 1;
+            motorTightTurn(direction);  
+    delay(20);
+        motorStop();
+        delay(20);
+      }
+          else{
+    motorTightTurn(direction);  
+    delay(20);
     }
-     }
-}
+}*/}
 
 void starting_square(void){
   Serial.println ("running starting_square");
@@ -552,7 +600,7 @@ void finishing_square(void){
    }
 
    motorForward();
-   delay(950);
+   delay(1050);
    motorStop();
    Serial.println("The robot should have returned to the starting square");
    while (1){
@@ -564,9 +612,14 @@ void finishing_square(void){
 }
 
 void picking_up_block(void){
-   // Code for picking up the block
+ledBlink();
+delay(1000);
+ledBlink();
 }
 
 void drop_off_block(void){
    // Code for dropping off the block
+   ledBlink();
+   delay(1000);
+   ledBlink();
 }

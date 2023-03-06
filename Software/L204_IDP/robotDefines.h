@@ -80,3 +80,4 @@ void finishing_square();
 void picking_up_block();
 void drop_off_block();
 void ledBlink();
+int colourDetection();

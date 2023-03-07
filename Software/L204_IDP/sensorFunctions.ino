@@ -117,7 +117,7 @@ void lineFollowingMode(){
 
 int colourDetection(){
   // Function that detects the colour of the block depending on the sensors from the Arduino reading
-  int colour = 2;
+  int colour = 1;
 
   return colour;
 }

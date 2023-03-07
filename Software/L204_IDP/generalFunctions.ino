@@ -1,8 +1,6 @@
 void ledBlink(void)
 {
-     if (millis() - previousMillis > interval) {
-    // save the last time you blinked the LED 
-    previousMillis = millis();   
+   
 
     // if the LED is off turn it on and vice-versa:
     if (OrangeLEDState == LOW)
@@ -12,7 +10,7 @@ void ledBlink(void)
       
     // set the LED with the ledState of the variable:
     digitalWrite(OrangeLED, OrangeLEDState);
-  }
+  
 }
 
 void followLine(void){
@@ -103,6 +101,8 @@ void block_junction_case(void){
    delay(10);
    motorForward();
    delay(1250);
+      myservo.write(140);
+   
    int new_turn = -1 * dir;   // Always need to turn opposite way into junction as out of last junction
    //dir = new_turn;
    int onLine = 0;
@@ -132,7 +132,7 @@ void block_junction_case(void){
 
    }  
    //  assuming it has aligned with the straight line in the junction
-    picking_up_block();
+    
    
    
    Serial.println("line found");
@@ -143,7 +143,9 @@ void block_junction_case(void){
     delay(50);
    }
    motorStop();
-   delay(1000);
+   delay(100);
+
+   picking_up_block();
    // Something is happening to pick up the block and sense the colour
    setDestination();
    
@@ -312,7 +314,7 @@ void mark(void){
     turn180degrees(LEFT);
     
   }
-    if ((pos == 3) && (dir == RIGHT)){
+  /*  if ((pos == 3) && (dir == RIGHT)){
     motorTightTurn(LEFT);
     delay(300);
     motorForward();
@@ -334,8 +336,8 @@ void mark(void){
     delay(20);
     }
 }
-    
-  }
+   */ 
+  
 
 // switch case for positions
 
@@ -600,7 +602,7 @@ void finishing_square(void){
    }
 
    motorForward();
-   delay(1050);
+   delay(910);
    motorStop();
    Serial.println("The robot should have returned to the starting square");
    while (1){
@@ -613,13 +615,13 @@ void finishing_square(void){
 
 void picking_up_block(void){
 ledBlink();
-delay(1000);
+myservo.write(0);
 ledBlink();
 }
 
 void drop_off_block(void){
    // Code for dropping off the block
    ledBlink();
-   delay(1000);
+myservo.write(140);
    ledBlink();
 }

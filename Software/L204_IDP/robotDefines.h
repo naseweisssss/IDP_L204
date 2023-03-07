@@ -45,6 +45,7 @@ const int OrangeLED = 13;
 const int RedLED = 12;              // May need to change the pins
 const int GreenLED = 11;
 const int buttonPin = 9;
+const int coloursensorpin = 
 int OrangeLEDState = LOW;
 long interval = 1000;
 long previousMillis = 0;

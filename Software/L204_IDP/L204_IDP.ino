@@ -20,7 +20,11 @@ void setup()
   myMotor_1->setSpeed(iniMotorPower);
   myMotor_2->setSpeed(iniMotorPower);
   Serial.begin(9600);
+  myservo.attach(10);
+ 
 
+ 
+myservo.write(0);
 
 
   

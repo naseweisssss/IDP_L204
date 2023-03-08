@@ -347,7 +347,7 @@ void mark(void){
        previousMillis = millis();
        int ramp = 0;
    while (!ramp){
-    if ((millis() - previousMillis) < 5700){
+    if ((millis() - previousMillis) < 5800){
       Serial.println("Still following line");
       followLine();
     }
@@ -358,9 +358,9 @@ void mark(void){
     }
     Serial.println("motor on ramp");
     motorTightTurn(RIGHT);
-    delay(200);
+    delay(400);
     motorForward();
-    delay(100);
+    delay(50);
     int onLine = 0;
      while(!onLine){
       readLFSsensors();
@@ -371,7 +371,7 @@ void mark(void){
         motorTightTurn(LEFT); 
         delay(20);
         motorStop();
-        delay(20);
+        delay(200);
       }
           else{
     motorTightTurn(LEFT);  
@@ -379,6 +379,7 @@ void mark(void){
     }
     
    }
+    
   }
   
 

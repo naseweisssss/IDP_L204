@@ -41,11 +41,11 @@ const float adj = 1;          // In case one motor drives at different speed to 
 const int spinSpeed = 100;          // Controls how case spins 180 in boxes
 
 // Defining the pins for LED output
-const int OrangeLED = 13;
-const int RedLED = 12;              // May need to change the pins
-const int GreenLED = 11;
-const int buttonPin = 9;
-const int coloursensorpin = 
+const int OrangeLED = 9;
+const int RedLED = 3;              // May need to change the pins
+const int GreenLED = 2;
+const int buttonPin = 13;
+const int coloursensorpin = 8;
 int OrangeLEDState = LOW;
 long interval = 1000;
 long previousMillis = 0;
@@ -82,3 +82,4 @@ void picking_up_block();
 void drop_off_block();
 void ledBlink();
 int colourDetection();
+void readSwitch();

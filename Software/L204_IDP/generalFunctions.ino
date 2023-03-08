@@ -5,8 +5,8 @@ void ledBlink(void)
     // if the LED is off turn it on and vice-versa:
     if (OrangeLEDState == LOW)
       OrangeLEDState = HIGH;
-    else
-      OrangeLEDState = LOW;
+    else if (OrangeLEDState == HIGH){
+      OrangeLEDState = LOW;}
       
     // set the LED with the ledState of the variable:
     digitalWrite(OrangeLED, OrangeLEDState);
@@ -138,7 +138,7 @@ void block_junction_case(void){
    Serial.println("line found");
 
    previousMillis = millis();
-   while ((millis() - previousMillis) < 750){
+   while ((millis() - previousMillis) < 850){
     followLine();
     delay(50);
    }
@@ -264,7 +264,45 @@ if (pos == target){
    turn180degrees(-dir);
    //delay(500);
    
-   
+   if (pos == RED_BOX){
+     
+    
+       previousMillis = millis();
+       int ramp = 0;
+   while (!ramp){
+    if ((millis() - previousMillis) < 5800){
+      Serial.println("Still following line");
+      followLine();
+    }
+    else{
+      Serial.println("reached 5.5s");
+      ramp = 1;
+    }
+    }
+    Serial.println("motor on ramp");
+    motorTightTurn(RIGHT);
+    delay(200);
+    motorForward();
+    delay(200);
+    int onLine = 0;
+     while(!onLine){
+      readLFSsensors();
+
+
+      if ((LFSensor[2] == 1)){
+        onLine = 1;
+        motorTightTurn(LEFT); 
+        delay(20);
+        motorStop();
+        delay(20);
+      }
+          else{
+    motorTightTurn(LEFT);  
+    delay(20);
+    }
+    
+   }
+   }
 
   
 
@@ -302,9 +340,47 @@ void mark(void){
   //pos = temp;
   pos = pos % 5;
 
-  if (pos == 1){
-    outside_junction = 1; 
+  if (pos == 1 && dir == RIGHT && target != 1){
+    delay(800);
+   
+    
+       previousMillis = millis();
+       int ramp = 0;
+   while (!ramp){
+    if ((millis() - previousMillis) < 5700){
+      Serial.println("Still following line");
+      followLine();
+    }
+    else{
+      Serial.println("reached 5.5s");
+      ramp = 1;
+    }
+    }
+    Serial.println("motor on ramp");
+    motorTightTurn(RIGHT);
+    delay(200);
+    motorForward();
+    delay(100);
+    int onLine = 0;
+     while(!onLine){
+      readLFSsensors();
+
+
+      if ((LFSensor[2] == 1)){
+        onLine = 1;
+        motorTightTurn(LEFT); 
+        delay(20);
+        motorStop();
+        delay(20);
+      }
+          else{
+    motorTightTurn(LEFT);  
+    delay(20);
+    }
+    
+   }
   }
+  
 
   if (pos == 4 ){
     motorTightTurn(RIGHT);
@@ -312,9 +388,11 @@ void mark(void){
     motorForward();
     delay(200);
     turn180degrees(LEFT);
+    motorTightTurn(LEFT);
+    delay(100);
     
   }
-  /*  if ((pos == 3) && (dir == RIGHT)){
+   if ((pos == 3) && (dir == RIGHT)){
     motorTightTurn(LEFT);
     delay(300);
     motorForward();
@@ -334,10 +412,34 @@ void mark(void){
           else{
     motorTightTurn(dir);  
     delay(20);
-    }
+    } 
 }
-   */ 
-  
+   
+   }
+   if ((pos == 0) && (dir == RIGHT)){
+    motorTightTurn(RIGHT);
+    delay(300);
+    motorForward();
+    delay(400);
+    int onLine = 0;
+     while(!onLine){
+      readLFSsensors();
+
+
+      if ((LFSensor[2] == 1)){
+        onLine = 1;
+        motorTightTurn(LEFT); 
+        delay(20);
+        motorStop();
+        delay(20);
+      }
+          else{
+    motorTightTurn(LEFT);  
+    delay(20);
+    } 
+}
+   
+   }
 
 // switch case for positions
 
@@ -605,6 +707,7 @@ void finishing_square(void){
    delay(910);
    motorStop();
    Serial.println("The robot should have returned to the starting square");
+   ledBlink();
    while (1){
     // Create an infinite loop to stop the robot moving
     delay(5000);
@@ -616,6 +719,7 @@ void finishing_square(void){
 void picking_up_block(void){
 ledBlink();
 myservo.write(0);
+
 ledBlink();
 }
 
@@ -623,5 +727,6 @@ void drop_off_block(void){
    // Code for dropping off the block
    ledBlink();
 myservo.write(140);
+
    ledBlink();
 }

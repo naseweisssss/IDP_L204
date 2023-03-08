@@ -117,7 +117,27 @@ void lineFollowingMode(){
 
 int colourDetection(){
   // Function that detects the colour of the block depending on the sensors from the Arduino reading
-  int colour = 1;
+  delay(2000);
+int colour1 = digitalRead(coloursensorpin);
+  Serial.println(colour1);
 
-  return colour;
-}
+  if (colour1 == 0){
+    digitalWrite(GreenLED, HIGH);
+    motorStop();
+    delay(5000);
+    digitalWrite(GreenLED, LOW);
+    return BLUE;
+    }
+
+   else if(colour1 == 1){
+
+  digitalWrite(RedLED, HIGH);
+  motorStop();
+  delay(5000);
+  digitalWrite(RedLED, LOW);
+  return BROWN;
+
+
+   } 
+  
+  }

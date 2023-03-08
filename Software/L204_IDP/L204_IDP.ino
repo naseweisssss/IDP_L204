@@ -29,6 +29,9 @@ myservo.write(0);
 
   
   pinMode(OrangeLED, OUTPUT);
+  pinMode(GreenLED, OUTPUT);
+  pinMode(RedLED, OUTPUT);
+  pinMode(coloursensorpin, INPUT);
   pinMode(buttonPin, INPUT_PULLUP);
 
   // line follow sensors
@@ -39,7 +42,7 @@ myservo.write(0);
 
 
   //startswitch
-  pinMode(buttonPin, INPUT);
+ 
 
 
 
@@ -50,20 +53,21 @@ myservo.write(0);
 
   // Theoretical code for starting loop when everything is started
 ;
-/*buttonPressed = 0;
+int buttonPressed = 0;
 while (buttonPressed!= 1){
     readSwitch();
-    if (Buttonsensor == 1){
+    if (Buttonsensor == 0){
       buttonPressed = 1;
       delay(1500);
+      ledBlink();
       starting_square();
     
     }
     delay(20);
-}*/
+}
 
-starting_square();
-ledBlink();
+
+
 }
 
 void loop() {
@@ -72,11 +76,6 @@ void loop() {
   followLine();
   
 
-
-  // IN CASE THIS STOPS THINGS WORKING I HAVE CHANGED:
-    // - MOVED MODE DECISIONS OUT OF ONE SENSOR FUNCTION
-    // - MOVED THE FOLLOWLINE CODE TO ANOTHER FUNCTION
-    // NOTHING ELSE RELATING TO LINE SENSING SHOULD HAVE BEEN CHANGED
 
 
  

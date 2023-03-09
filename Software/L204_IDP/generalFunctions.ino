@@ -278,13 +278,17 @@ if (pos == target){
        previousMillis = millis();
        int ramp = 0;
    while (!ramp){
-    if ((millis() - previousMillis) < 5800){
+    if ((millis() - previousMillis) < 4600){
       Serial.println("Still following line");
       followLine();
     }
     else{
       Serial.println("reached 5.5s");
       ramp = 1;
+      previousMillis = millis();
+      while ((millis() - previousMillis)<2500){
+        followLine();
+      }
     }
     }
     Serial.println("motor on ramp");
@@ -367,12 +371,16 @@ void mark(void){
       readLFSsensors();
 
 
-      if ((LFSensor[1] == 1)){    // Have changed which sensor is waiting for
+      if ((LFSensor[2] == 1)){    // Have changed which sensor is waiting for
         onLine = 1;
         motorTightTurn(LEFT); 
         delay(20);
         motorStop();
         delay(20);
+        previousMillis = millis();
+        while((millis() - previousMillis) < 2500){
+          followLine();
+        }
       }
           else{
     motorTightTurn(LEFT);  
@@ -670,7 +678,10 @@ void finishing_square(void){
    motorStop();
    delay(1000);
     motorForward();
-    delay(1250);
+    delay(900);
+    if (dir == LEFT){
+      delay(400);
+    }
     //int new_turn = -1 * dir;   // Always need to turn opposite way into junction as out of last junction
     //dir = new_turn;
     int onLine = 0;
@@ -707,7 +718,7 @@ void finishing_square(void){
    }
 
    motorForward();
-   delay(910);
+   delay(950);
    motorStop();
    Serial.println("The robot should have returned to the starting square");
    ledBlink();

@@ -149,7 +149,15 @@ void block_junction_case(void){
    // Something is happening to pick up the block and sense the colour
    setDestination();
    
-   
+   // For some reason the next line of code does not appear to be called when at BLOCK2 and instead exits the loop
+    if (pos == 3){      // Trying to force it to start turning to allow for testing
+      motorTightTurn(RIGHT);
+      delay(300);
+      motorStop();
+      delay(500);
+    }
+
+
    turn180degrees(RIGHT);
    //delay(1000);
    dir = RIGHT;
@@ -315,30 +323,23 @@ if (pos == target){
   }
 }
 
-// TODO - make all the LED commands work
 void mark(void){
   // Keeps track of the current position of the robot
-  //int temp = pos;
   if (dir == RIGHT){
    // Last turned right at a junction so is moving anti-clockwise
-   
-   // Slightly janky code to make sure no errors
-   
-   //temp++;
    pos++;
   }
 
   else if (dir == LEFT){
    // Last turned left at a junction so is moving clockwise
-   
-   // Slightly janky code to make sure no errors
-   //temp--;
    pos--;
   }
-
-  //temp = temp % 5;
-  //pos = temp;
   pos = pos % 5;
+
+  if (pos == 3){
+    outside_junction = 1;     // May need to remove here and in the junction 4 case
+  }
+
 
   if (pos == 1 && dir == RIGHT && target != 1){
     delay(800);
@@ -366,12 +367,12 @@ void mark(void){
       readLFSsensors();
 
 
-      if ((LFSensor[2] == 1)){
+      if ((LFSensor[1] == 1)){    // Have changed which sensor is waiting for
         onLine = 1;
         motorTightTurn(LEFT); 
         delay(20);
         motorStop();
-        delay(200);
+        delay(20);
       }
           else{
     motorTightTurn(LEFT);  
@@ -391,6 +392,7 @@ void mark(void){
     turn180degrees(LEFT);
     motorTightTurn(LEFT);
     delay(100);
+    outside_junction = 0;
     
   }
    if ((pos == 3) && (dir == RIGHT)){
@@ -512,7 +514,7 @@ void setDestination(void){
           Serial.println("Target set to 1");
             target = 1;
          }
-         dir = LEFT;
+         dir = RIGHT;
          break;
 
       case BLOCK2:
@@ -525,7 +527,7 @@ void setDestination(void){
           Serial.println("Target set to 1");
             target = 1;
          }
-         dir = LEFT;
+         dir = RIGHT;
          break;
 
       case RED_BOX:
@@ -584,7 +586,7 @@ void turn180degrees(int direction){
    int onLine = 0;
    while(!onLine){
     readLFSsensors();
-    if ((LFSensor[2] == 1)|| (LFSensor[1]==1))
+    if ((LFSensor[2] == 1) || (LFSensor[1]==1))
     {
       onLine = 1;
       motorTightTurn(direction);  
@@ -721,7 +723,7 @@ void picking_up_block(void){
 ledBlink();
 myservo.write(0);
 
-ledBlink();
+
 }
 
 void drop_off_block(void){

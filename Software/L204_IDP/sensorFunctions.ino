@@ -126,6 +126,7 @@ int colour1 = digitalRead(coloursensorpin);
     motorStop();
     delay(5000);
     digitalWrite(GreenLED, LOW);
+    ledBlink();
     return BLUE;
     }
 
@@ -135,6 +136,7 @@ int colour1 = digitalRead(coloursensorpin);
   motorStop();
   delay(5000);
   digitalWrite(RedLED, LOW);
+  ledBlink();
   return BROWN;
 
 

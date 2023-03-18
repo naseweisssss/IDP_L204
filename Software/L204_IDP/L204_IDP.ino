@@ -1,3 +1,5 @@
+//import the neccessary library
+
 #include <Servo.h>
 #include "robotDefines.h"
 #include <Wire.h>
@@ -5,10 +7,8 @@
 #include "utility/Adafruit_MS_PWMServoDriver.h"
 
 
-String command;   // Not sure what these 2 lines are doing
-String device;
 
-
+//iniitalise motor on port 4 and port 3 respectively
 Adafruit_MotorShield AFMS = Adafruit_MotorShield();
 Adafruit_DCMotor *myMotor_1 = AFMS.getMotor(4);
 Adafruit_DCMotor *myMotor_2 = AFMS.getMotor(3);
@@ -16,15 +16,17 @@ Servo myservo;
 
 void setup()
 {
+  //set an initial speed to the motor
   AFMS.begin();
   myMotor_1->setSpeed(iniMotorPower);
   myMotor_2->setSpeed(iniMotorPower);
   Serial.begin(9600);
+  //attach servo to port 10 
   myservo.attach(10);
  
 
- 
-myservo.write(0);
+ //initialise servo ar position 0
+  myservo.write(0);
 
 
   
@@ -40,19 +42,11 @@ myservo.write(0);
   pinMode(lineFollowSensor2, INPUT);
   pinMode(lineFollowSensor3, INPUT);
 
-
-  //startswitch
  
-
-
-
-  //-----------------------------------------
-  //May need to remove the button requirement while there is no button during testing
   Serial.println("Line Follower is alive ==> Presss the button to start");
 
-
-  // Theoretical code for starting loop when everything is started
-;
+//robot will wait for button press
+//when the button is pressed, starting_square() will be run 
 int buttonPressed = 0;
 while (buttonPressed!= 1){
     readSwitch();
